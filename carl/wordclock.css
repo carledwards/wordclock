@@ -1,0 +1,36 @@
+body {
+  background: #000;
+  font-size: 120%;
+}
+
+div {
+  padding: 0 5px;
+  margin: 10px;
+  margin-left: 18px;
+}
+
+.line {
+  text-align: justify;
+  padding: 0;
+  font-size: 160%;
+  font-family: Verdana;
+}
+
+.line:after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
+.hl {
+  color: white;
+}
+
+.ho {
+  color: #007070;
+}
+
+.norm {
+  color: #202020;
+}
+
