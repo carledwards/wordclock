@@ -196,7 +196,7 @@ var clock = {
 				clock.enableOccasionStyle('text-birthday');
 				clock.disableStyle('text-day');
 			}
-			else if (mo == 6 && da == 16) {
+			else if (mo == 6 && da == 15) {
 				clock.enableOccasionStyle('text-happy');
 				clock.disableStyle('text-anniversary');
 				clock.disableStyle('text-yvette');
