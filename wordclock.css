@@ -1,19 +1,25 @@
-body {
+html, body {
+  height: 100%;
   background: #000;
   font-size: 120%;
 }
 
-div {
-  padding: 0 5px;
-  margin: 10px;
-  margin-left: 18px;
+.clock {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
 }
 
 .line {
   text-align: justify;
+  flex: auto;
   padding: 0;
-  font-size: 160%;
+  font-size: 200%;
   font-family: Verdana;
+  padding: 0 5px;
+  margin: 10px;
+  margin-left: 18px;
 }
 
 .line:after {
@@ -27,7 +33,7 @@ div {
 }
 
 .ho {
-  color: #007070;
+  color: #00ae9d;
 }
 
 .norm {
