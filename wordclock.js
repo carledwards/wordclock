@@ -107,6 +107,8 @@ var clock = {
         clock.disableStyle('text-new');
         clock.disableStyle('text-year');
         clock.disableStyle('text-christmas');
+        clock.disableStyle('text-liam');
+        clock.disableStyle('text-kristen');
 
         if (m < 5) {
             clock.enableStyle('text-oclock');
@@ -208,6 +210,16 @@ var clock = {
             clock.enableOccasionStyle('text-happy');
             clock.enableOccasionStyle('text-new');
             clock.enableOccasionStyle('text-year');
+        }
+        else if (mo == 12 && da == 29) {
+            clock.enableOccasionStyle('text-happy');
+            clock.enableOccasionStyle('text-birthday');
+            clock.enableOccasionStyle('text-liam');
+        }
+        else if (mo == 8 && da == 6) {
+            clock.enableOccasionStyle('text-happy');
+            clock.enableOccasionStyle('text-birthday');
+            clock.enableOccasionStyle('text-kristen');
         }
     },
     init: function(){
