@@ -1,14 +1,22 @@
 html, body {
-  height: 100%;
+  font-family: Verdana;
   background: #000;
-  font-size: 120%;
-  overflow: hidden;
 }
 
 .clock {
-  height: 100%;
+  font-size: 2rem;
+  height: 100vh;
+}
+
+ul {
+  height: 10.5%;
+  font-size: 2rem;
+  list-style: none;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  padding-inline-start: .1em;
+  margin-block-start: .25em;
+  margin-block-end: .25em;
 }
 
 .hl {
@@ -19,40 +27,6 @@ html, body {
   color: #00ae9d;
 }
 
-.line {
-  padding: 0;
-  font-family: Verdana;
+.norm {
+  color: #505050;
 }
-
-.line:after {
-  content: "";
-  display: inline-block;
-  width: 100%;
-}
-
-@media (min-width: 750px) {
-  .line {
-    text-align: justify;
-    flex: auto;
-    font-size: 140%;
-    padding: 0 5px;
-    margin-left: 8px;
-  }
-  .norm {
-    color: #505050;
-  }
-}
-
-@media (max-width: 749px) {
-  .ho {
-    display: block;
-    float: right
-  }
-  .line {
-    font-size: 120%;
-  }
-  .norm {
-    display: none;
-  }
-}
-
