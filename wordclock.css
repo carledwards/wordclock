@@ -32,10 +32,12 @@
   --border-color: #ffffff;
   --active-color: #ffffff;
   --inactive-color: #808080;
-  --special-color: #00d4bf;
-  --font-family: "Courier New", monospace;
+  --special-color: #ffff00;
+  --font-family: "Lucida Console", "Monaco", monospace;
   --border-radius: 0;
   --box-shadow: none;
+  letter-spacing: 0;
+  font-size: 0.95em;
 }
 
 html, body {
@@ -106,8 +108,9 @@ body.has-background .norm {
   border: none;
   padding: 1.5rem;
   margin: 1.5rem;
-  font-weight: bold;
+  font-weight: normal;
   text-transform: uppercase;
+  letter-spacing: 0;
 }
 
 /* DOS border */
