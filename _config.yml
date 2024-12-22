@@ -1,0 +1,22 @@
+# Basic GitHub Pages Configuration
+title: Word Clock
+description: An interactive word clock display with special date features
+baseurl: "/wordclock"  # the subpath of your site, e.g. /blog
+url: ""  # the base hostname & protocol, e.g. http://example.com
+
+# Build settings
+markdown: kramdown
+exclude:
+  - README.md
+  - .gitignore
+
+# GitHub Pages settings
+lsi: false
+safe: true
+incremental: false
+highlighter: rouge
+gist:
+  noscript: false
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge

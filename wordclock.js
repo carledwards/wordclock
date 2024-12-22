@@ -1,7 +1,65 @@
+// Special dates configuration
+const SPECIAL_DATES = {
+    // Fixed dates
+    '4-29': { // April 29
+        name: 'Anniversary',
+        elements: ['text-happy', 'text-anniversary', 'text-yvette', 'text-and', 'text-carl']
+    },
+    '5-5': { // May 5
+        name: "Yvette's Birthday",
+        elements: ['text-happy', 'text-yvette', 'text-birthday']
+    },
+    '6-10': { // June 10
+        name: "Carl's Birthday",
+        elements: ['text-happy', 'text-carl', 'text-birthday']
+    },
+    '7-14': { // July 14
+        name: "Nick's Birthday",
+        elements: ['text-happy', 'text-nick', 'text-birthday']
+    },
+    '9-4': { // September 4
+        name: "Alli's Birthday",
+        elements: ['text-happy', 'text-alli', 'text-birthday']
+    },
+    '12-25': { // December 25
+        name: 'Christmas',
+        elements: ['text-merry', 'text-christmas']
+    },
+    '1-1': { // January 1
+        name: 'New Year',
+        elements: ['text-happy', 'text-new', 'text-year']
+    },
+    '12-29': { // December 29
+        name: "Liam's Birthday",
+        elements: ['text-happy', 'text-birthday', 'text-liam']
+    },
+    '8-6': { // August 6
+        name: "Kristen's Birthday",
+        elements: ['text-happy', 'text-birthday', 'text-kristen']
+    }
+};
+
+// Dynamic special dates
+const DYNAMIC_DATES = {
+    "Father's Day": {
+        elements: ['text-happy', 'text-fathers', 'text-day'],
+        getDate: (year) => {
+            const date = new Date(year, 5, 1); // June 1st
+            date.setDate(date.getDay() === 0 ? 15 : 22 - date.getDay());
+            return date;
+        }
+    },
+    "Mother's Day": {
+        elements: ['text-happy', 'text-mothers', 'text-day'],
+        getDate: (year) => {
+            const date = new Date(year, 4, 1); // May 1st
+            date.setDate(date.getDay() === 0 ? 8 : 15 - date.getDay());
+            return date;
+        }
+    }
+};
+
 var clock = {
-    hour_num: 1,
-    min_num: 0,
-    sec_num: null,
     
     disableStyle: function(elementReference){
         var e = document.getElementById(elementReference);
@@ -21,27 +79,35 @@ var clock = {
             return;
         e.className = 'ho';
     },
-    getFathersDayForYear: function(year){
-        var date = new Date(year, 5, 1, 0, 0, 0, 0);
-        var day = date.getDay();
-        if (day == 0) {
-            date.setDate(15);
-        }
-        else {
-            date.setDate(22-date.getDay());
-        }
-        return date;
+    // Helper method to enable multiple elements with occasion style
+    enableElements: function(elements) {
+        elements.forEach(element => this.enableOccasionStyle(element));
     },
-    getMothersDayForYear: function(year){
-        var date = new Date(year, 4, 1, 0, 0, 0, 0);
-        var day = date.getDay();
-        if (day == 0) {
-            date.setDate(8);
+
+    // Helper method to check and handle special dates
+    handleSpecialDates: function(moment) {
+        const mo = moment.getMonth() + 1;
+        const da = moment.getDate();
+        const yr = moment.getFullYear();
+        
+        // Check fixed special dates
+        const dateKey = `${mo}-${da}`;
+        const specialDate = SPECIAL_DATES[dateKey];
+        if (specialDate) {
+            this.enableElements(specialDate.elements);
+            return true;
         }
-        else {
-            date.setDate(15-date.getDay());
+
+        // Check dynamic dates
+        const currentDate = new Date(yr, mo-1, da, 0, 0, 0, 0).getTime();
+        for (const [name, config] of Object.entries(DYNAMIC_DATES)) {
+            if (currentDate === config.getDate(yr).getTime()) {
+                this.enableElements(config.elements);
+                return true;
+            }
         }
-        return date;
+
+        return false;
     },
     
     startClock: function(){
@@ -165,65 +231,29 @@ var clock = {
             }
         }
 
-        if (mo == 4 && da == 29) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-anniversary');
-            clock.enableOccasionStyle('text-yvette');
-            clock.enableOccasionStyle('text-and');
-            clock.enableOccasionStyle('text-carl');
-        }
-        else if (mo == 5 && da == 5) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-yvette');
-            clock.enableOccasionStyle('text-birthday');
-        }
-        else if (new Date(yr, mo-1, da, 0, 0, 0, 0).getTime() === clock.getFathersDayForYear(yr).getTime()) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-fathers');
-            clock.enableOccasionStyle('text-day');
-        }
-        else if (new Date(yr, mo-1, da, 0, 0, 0, 0).getTime() === clock.getMothersDayForYear(yr).getTime()) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-mothers');
-            clock.enableOccasionStyle('text-day');
-        }
-        else if (mo == 6 && da == 10) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-carl');
-            clock.enableOccasionStyle('text-birthday');
-        }
-        else if (mo == 7 && da == 14) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-nick');
-            clock.enableOccasionStyle('text-birthday');
-        }
-        else if (mo == 9 && da == 4) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-alli');
-            clock.enableOccasionStyle('text-birthday');
-        }
-        else if (mo == 12 && da == 25) {
-            clock.enableOccasionStyle('text-merry');
-            clock.enableOccasionStyle('text-christmas');
-        }
-        else if (mo == 1 && da == 1) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-new');
-            clock.enableOccasionStyle('text-year');
-        }
-        else if (mo == 12 && da == 29) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-birthday');
-            clock.enableOccasionStyle('text-liam');
-        }
-        else if (mo == 8 && da == 6) {
-            clock.enableOccasionStyle('text-happy');
-            clock.enableOccasionStyle('text-birthday');
-            clock.enableOccasionStyle('text-kristen');
-        }
+        // Handle special dates
+        this.handleSpecialDates(moment);
     },
+    getDateFromURL: function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('date')) {
+            const [year, month, day] = params.get('date').split('-').map(Number);
+            if (year && month && day) {
+                return new Date(year, month - 1, day);
+            }
+        }
+        return null;
+    },
+    
     init: function(){
-        clock.startClock();
+        const dateFromURL = clock.getDateFromURL();
+        if (dateFromURL) {
+            // If date parameter exists, just update once with that date
+            clock.updateTime(dateFromURL);
+        } else {
+            // Otherwise start the normal clock
+            clock.startClock();
+        }
     }
 };
 window.onload = function(){
