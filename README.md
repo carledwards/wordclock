@@ -15,15 +15,26 @@ The word clock presents time in a natural language format, illuminating specific
 - Screen-like display with subtle visual effects
 - Mobile-responsive design
 
-## Testing Special Dates
-You can test different date displays by adding a date parameter to the URL:
+## Live Demos
+
+### Regular Time Display
+[View the Word Clock](https://carledwards.github.io/wordclock/) - Shows the current time in natural language
+
+### Special Occasion Demos
+Experience how the display transforms for special occasions:
+
+- [Merry Christmas](https://carledwards.github.io/wordclock/?date=2024-12-25) - Watch the display illuminate "MERRY CHRISTMAS" in festive colors
+- [Happy Anniversary](https://carledwards.github.io/wordclock/?date=2024-04-29) - See the special anniversary celebration display
+
+## Testing Other Dates
+You can test any date by adding a date parameter to the URL:
 ```
 ?date=YYYY-MM-DD
 ```
 
-For example:
-- Christmas: `?date=2024-12-25`
+Some examples:
 - New Year: `?date=2024-01-01`
+- Any special occasion: Replace YYYY-MM-DD with your desired date
 
 ## Technical Details
 - Pure JavaScript implementation
