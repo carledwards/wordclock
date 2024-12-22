@@ -25,6 +25,7 @@ Experience how the display transforms for special occasions:
 
 - [Merry Christmas](https://carledwards.github.io/wordclock/?date=2024-12-25) - Watch the display illuminate "MERRY CHRISTMAS" in festive colors
 - [Happy Anniversary](https://carledwards.github.io/wordclock/?date=2024-04-29) - See the special anniversary celebration display
+- [Adventure Time Birthday](https://carledwards.github.io/wordclock/?date=2024-09-04&background=https://variety.com/wp-content/uploads/2024/06/TCDADTI_CA002.jpg?w=1000&h=667&crop=1) - See Alli's birthday with a custom background
 
 ## URL Parameters
 
@@ -37,6 +38,14 @@ Test any date by adding a date parameter:
 Examples:
 - New Year: `?date=2024-01-01`
 - Any special occasion: Replace YYYY-MM-DD with your desired date
+
+### Background Image Parameter
+Add a custom background image to the clock display:
+```
+?background=IMAGE_URL
+```
+
+The background image will be contained within the clock display, and the text will have enhanced visibility with shadows.
 
 ### Theme Parameter
 Choose from two classic computer themes by adding the theme parameter:
@@ -60,9 +69,9 @@ Available themes:
 - Monospace font for authentic DOS look
 
 ### Combining Parameters
-You can combine both parameters to show special dates in terminal style:
+You can combine multiple parameters to create unique displays:
 ```
-?date=2024-12-25&theme=terminal
+?date=YYYY-MM-DD&theme=THEME&background=IMAGE_URL
 ```
 
 Examples:
@@ -70,6 +79,7 @@ Examples:
 - DOS Christmas: `?date=2024-12-25&theme=dos`
 - Terminal New Year: `?date=2024-01-01&theme=terminal`
 - DOS New Year: `?date=2024-01-01&theme=dos`
+- Adventure Time Birthday: `?date=2024-09-04&background=https://variety.com/wp-content/uploads/2024/06/TCDADTI_CA002.jpg?w=1000&h=667&crop=1` - Shows Alli's birthday with an Adventure Time background
 
 ## Technical Details
 - Pure JavaScript implementation

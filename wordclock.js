@@ -238,7 +238,8 @@ var clock = {
         const params = new URLSearchParams(window.location.search);
         const result = {
             date: null,
-            theme: null
+            theme: null,
+            background: null
         };
 
         if (params.has('date')) {
@@ -257,12 +258,24 @@ var clock = {
             result.theme = params.get('theme').toLowerCase();
         }
 
+        if (params.has('background')) {
+            result.background = params.get('background');
+        }
+
         return result;
     },
 
     applyTheme: function(theme) {
         if (theme === 'terminal' || theme === 'dos') {
             document.body.classList.add(theme);
+        }
+    },
+
+    applyBackground: function(url) {
+        if (url) {
+            const clock = document.querySelector('.clock');
+            clock.style.backgroundImage = `url(${decodeURIComponent(url)})`;
+            document.body.classList.add('has-background');
         }
     },
     
@@ -272,6 +285,11 @@ var clock = {
         // Apply theme if specified
         if (params.theme) {
             clock.applyTheme(params.theme);
+        }
+
+        // Apply background if specified
+        if (params.background) {
+            clock.applyBackground(params.background);
         }
 
         // Handle date parameter
