@@ -234,36 +234,58 @@ var clock = {
         // Handle special dates
         this.handleSpecialDates(moment);
     },
-    getDateFromURL: function() {
+    getURLParams: function() {
         const params = new URLSearchParams(window.location.search);
+        const result = {
+            date: null,
+            theme: null
+        };
+
         if (params.has('date')) {
             const [year, month, day] = params.get('date').split('-').map(Number);
             if (year && month && day) {
                 const now = new Date();
-                // Use the custom date but keep current time
-                return new Date(year, month - 1, day, 
+                result.date = new Date(year, month - 1, day, 
                     now.getHours(), 
                     now.getMinutes(), 
                     now.getSeconds()
                 );
             }
         }
-        return null;
+
+        if (params.has('theme')) {
+            result.theme = params.get('theme').toLowerCase();
+        }
+
+        return result;
+    },
+
+    applyTheme: function(theme) {
+        if (theme === 'terminal' || theme === 'dos') {
+            document.body.classList.add(theme);
+        }
     },
     
     init: function(){
-        const dateFromURL = clock.getDateFromURL();
-        if (dateFromURL) {
+        const params = clock.getURLParams();
+        
+        // Apply theme if specified
+        if (params.theme) {
+            clock.applyTheme(params.theme);
+        }
+
+        // Handle date parameter
+        if (params.date) {
             // If date parameter exists, start clock with that date
             setInterval(function(){
                 const now = new Date();
                 // Update the custom date with current time
-                dateFromURL.setHours(now.getHours());
-                dateFromURL.setMinutes(now.getMinutes());
-                dateFromURL.setSeconds(now.getSeconds());
-                clock.updateTime(dateFromURL);
+                params.date.setHours(now.getHours());
+                params.date.setMinutes(now.getMinutes());
+                params.date.setSeconds(now.getSeconds());
+                clock.updateTime(params.date);
             }, 2000);
-            clock.updateTime(dateFromURL);
+            clock.updateTime(params.date);
         } else {
             // Otherwise start the normal clock
             clock.startClock();

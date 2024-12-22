@@ -26,15 +26,50 @@ Experience how the display transforms for special occasions:
 - [Merry Christmas](https://carledwards.github.io/wordclock/?date=2024-12-25) - Watch the display illuminate "MERRY CHRISTMAS" in festive colors
 - [Happy Anniversary](https://carledwards.github.io/wordclock/?date=2024-04-29) - See the special anniversary celebration display
 
-## Testing Other Dates
-You can test any date by adding a date parameter to the URL:
+## URL Parameters
+
+### Date Parameter
+Test any date by adding a date parameter:
 ```
 ?date=YYYY-MM-DD
 ```
 
-Some examples:
+Examples:
 - New Year: `?date=2024-01-01`
 - Any special occasion: Replace YYYY-MM-DD with your desired date
+
+### Theme Parameter
+Choose from two classic computer themes by adding the theme parameter:
+```
+?theme=terminal    # Green terminal display
+?theme=dos        # Classic DOS window
+```
+
+Available themes:
+
+#### Terminal Theme
+- Classic green monospace text
+- Yellow highlights for special occasions
+- Terminal-style border with subtle glow
+- Black background with green accents
+
+#### DOS Theme
+- Classic blue background with white text
+- Original color scheme for special occasions
+- DOS window-style border with 3D effect
+- Monospace font for authentic DOS look
+
+### Combining Parameters
+You can combine both parameters to show special dates in terminal style:
+```
+?date=2024-12-25&theme=terminal
+```
+
+Examples:
+- Terminal Christmas: `?date=2024-12-25&theme=terminal`
+- DOS Christmas: `?date=2024-12-25&theme=dos`
+- Terminal New Year: `?date=2024-01-01&theme=terminal`
+- DOS New Year: `?date=2024-01-01&theme=dos`
 
 ## Technical Details
 - Pure JavaScript implementation
