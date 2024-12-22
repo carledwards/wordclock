@@ -56,6 +56,13 @@ Choose from two classic computer themes by adding the theme parameter:
 
 Available themes:
 
+#### Live Terminal Theme
+- Terminal-style display with animated cursor
+- Cursor draws text left-to-right, top-to-bottom
+- Full screen redraw on updates
+- Blinking cursor in bottom right when idle
+- Time controls available for testing
+
 #### Terminal Theme
 - Classic green monospace text
 - Yellow highlights for special occasions
@@ -68,13 +75,21 @@ Available themes:
 - DOS window-style border with 3D effect
 - Monospace font for authentic DOS look
 
+### Time Controls Parameter
+Add interactive time controls to test different times (works with any theme):
+```
+?controls=true
+```
+This adds a time input widget at the top of the display.
+
 ### Combining Parameters
 You can combine multiple parameters to create unique displays:
 ```
-?date=YYYY-MM-DD&theme=THEME&background=IMAGE_URL
+?date=YYYY-MM-DD&theme=THEME&background=IMAGE_URL&controls=true
 ```
 
 Examples:
+- Live Terminal with Controls: `?theme=live-terminal&controls=true`
 - Terminal Christmas: `?date=2024-12-25&theme=terminal`
 - DOS Christmas: `?date=2024-12-25&theme=dos`
 - Terminal New Year: `?date=2024-01-01&theme=terminal`

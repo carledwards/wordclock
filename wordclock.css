@@ -13,7 +13,7 @@
 }
 
 /* Terminal theme */
-.terminal {
+.terminal, .live-terminal {
   --bg-color: #000;
   --border-color: #00ff00;
   --active-color: #00ff00;
@@ -193,8 +193,56 @@ body.has-background .norm {
 }
 
 .terminal .clock::before,
-.dos .clock::before {
+.dos .clock::before,
+.live-terminal .clock::before {
   background: none;
+}
+
+/* Live Terminal theme additions */
+.live-terminal .clock {
+  position: relative;
+}
+
+.live-terminal .cursor {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0.4rem;
+  width: 0.8em;
+  height: 1.2em;
+  background-color: #00ff00;
+  animation: blink 1s step-end infinite;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+@keyframes blink {
+  0% { opacity: 0.8; }
+  50% { opacity: 0; }
+}
+
+.live-terminal .cursor.moving {
+  animation: none;
+  opacity: 1;
+  transition: all 0.01s linear;
+}
+
+.live-terminal li {
+  transition: opacity 0.01s linear;
+}
+
+.live-terminal li.hidden {
+  opacity: 0;
+}
+
+.live-terminal .clock.clearing * {
+  opacity: 0;
+  transition: none;
+}
+
+.live-terminal .cursor.moving {
+  animation: none;
+  opacity: 1;
+  transition: all 0.02s linear;
 }
 
 ul {
@@ -232,4 +280,77 @@ ul {
 
 .norm {
   color: var(--inactive-color);
+}
+
+/* Time Controls */
+.time-controls {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  display: none;
+  gap: 1rem;
+  align-items: center;
+  font-family: var(--font-family);
+  z-index: 10;
+}
+
+.time-controls.visible {
+  display: flex;
+}
+
+.time-controls input {
+  background: var(--bg-color);
+  color: var(--active-color);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem;
+  font-family: inherit;
+  width: 8.5rem;
+}
+
+.time-controls button {
+  background: var(--bg-color);
+  color: var(--active-color);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.time-controls button:hover {
+  background: var(--active-color);
+  color: var(--bg-color);
+}
+
+/* Terminal theme specific controls */
+.terminal .time-controls,
+.live-terminal .time-controls {
+  border: 1px solid var(--active-color);
+  box-shadow: 0 0 2px var(--active-color);
+  padding: 0.75rem 1rem;
+}
+
+.terminal .time-controls input,
+.live-terminal .time-controls input {
+  background: var(--bg-color);
+  border: 1px solid var(--active-color);
+  box-shadow: 0 0 2px var(--active-color) inset;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
+
+.terminal .time-controls button,
+.live-terminal .time-controls button {
+  border: 1px solid var(--active-color);
+  box-shadow: 0 0 2px var(--active-color);
+  padding: 0.25rem 1rem;
+  font-size: 1rem;
+}
+
+.time-controls label {
+  color: var(--active-color);
 }
