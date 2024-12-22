@@ -239,7 +239,13 @@ var clock = {
         if (params.has('date')) {
             const [year, month, day] = params.get('date').split('-').map(Number);
             if (year && month && day) {
-                return new Date(year, month - 1, day);
+                const now = new Date();
+                // Use the custom date but keep current time
+                return new Date(year, month - 1, day, 
+                    now.getHours(), 
+                    now.getMinutes(), 
+                    now.getSeconds()
+                );
             }
         }
         return null;
@@ -248,7 +254,15 @@ var clock = {
     init: function(){
         const dateFromURL = clock.getDateFromURL();
         if (dateFromURL) {
-            // If date parameter exists, just update once with that date
+            // If date parameter exists, start clock with that date
+            setInterval(function(){
+                const now = new Date();
+                // Update the custom date with current time
+                dateFromURL.setHours(now.getHours());
+                dateFromURL.setMinutes(now.getMinutes());
+                dateFromURL.setSeconds(now.getSeconds());
+                clock.updateTime(dateFromURL);
+            }, 2000);
             clock.updateTime(dateFromURL);
         } else {
             // Otherwise start the normal clock
