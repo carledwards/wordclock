@@ -1,43 +1,120 @@
-// Special dates configuration
-const SPECIAL_DATES = {
-    // Fixed dates
-    '4-29': { // April 29
-        name: 'Anniversary',
-        elements: ['text-happy', 'text-anniversary', 'text-yvette', 'text-and', 'text-carl']
-    },
-    '5-5': { // May 5
-        name: "Yvette's Birthday",
-        elements: ['text-happy', 'text-yvette', 'text-birthday']
-    },
-    '6-10': { // June 10
-        name: "Carl's Birthday",
-        elements: ['text-happy', 'text-carl', 'text-birthday']
-    },
-    '7-14': { // July 14
-        name: "Nick's Birthday",
-        elements: ['text-happy', 'text-nick', 'text-birthday']
-    },
-    '9-4': { // September 4
-        name: "Alli's Birthday",
-        elements: ['text-happy', 'text-alli', 'text-birthday']
-    },
-    '12-25': { // December 25
-        name: 'Christmas',
-        elements: ['text-merry', 'text-christmas']
-    },
-    '1-1': { // January 1
-        name: 'New Year',
-        elements: ['text-happy', 'text-new', 'text-year']
-    },
-    '12-29': { // December 29
-        name: "Liam's Birthday",
-        elements: ['text-happy', 'text-birthday', 'text-liam']
-    },
-    '8-6': { // August 6
-        name: "Kristen's Birthday",
-        elements: ['text-happy', 'text-birthday', 'text-kristen']
+// Family configuration validation
+function validateFamilyConfig(config) {
+    // Check if parents exist and have required fields
+    if (!config.parents?.mom?.name || !config.parents?.mom?.birthday ||
+        !config.parents?.dad?.name || !config.parents?.dad?.birthday ||
+        !config.parents?.anniversary) {
+        throw new Error('Parents configuration must include mom and dad with names, birthdays, and anniversary date');
     }
+
+    // Check if there are between 1 and 4 children
+    if (!Array.isArray(config.children) || config.children.length < 1 || config.children.length > 4) {
+        throw new Error('Must have between 1 and 4 children');
+    }
+
+    // Validate each child has required fields
+    config.children.forEach((child, index) => {
+        if (!child.name || !child.birthday) {
+            throw new Error(`Child ${index + 1} must have name and birthday`);
+        }
+    });
+
+    return true;
+}
+
+// Example family configuration
+const FAMILY_CONFIG = {
+    parents: {
+        mom: {
+            name: "Yvette",
+            birthday: "1999/05/05"
+        },
+        dad: {
+            name: "Carl",
+            birthday: "1999/06/10"
+        },
+        anniversary: "1999/04/29"
+    },
+    children: [
+        {
+            name: "Alli",
+            birthday: "1999/09/04"
+        },
+        {
+            name: "Nick",
+            birthday: "1999/07/14"
+        },
+        {
+            name: "Liam",
+            birthday: "1999/12/29"
+        },
+        {
+            name: "Kristen",
+            birthday: "1999/08/06"
+        }
+    ]
 };
+
+// Validate configuration on load
+validateFamilyConfig(FAMILY_CONFIG);
+
+// Function to get element ID for a family member
+function getFamilyMemberElementId(role, childIndex = null) {
+    if (role === 'mom' || role === 'dad') {
+        return `text-${role}`;
+    }
+    return `text-child${childIndex + 1}`;
+}
+
+// Function to generate special dates from family config
+function generateSpecialDates(config) {
+    const dates = {
+        // Fixed holidays
+        '12-25': { // December 25
+            name: 'Christmas',
+            elements: ['text-merry', 'text-christmas']
+        },
+        '1-1': { // January 1
+            name: 'New Year',
+            elements: ['text-happy', 'text-new', 'text-year']
+        }
+    };
+
+    // Add anniversary
+    const [aYear, aMonth, aDay] = config.parents.anniversary.split('/');
+    const anniversaryKey = `${parseInt(aMonth)}-${parseInt(aDay)}`;
+    dates[anniversaryKey] = {
+        name: 'Anniversary',
+        elements: ['text-happy', 'text-anniversary', getFamilyMemberElementId('mom'), 'text-and', getFamilyMemberElementId('dad')]
+    };
+
+    // Add parents' birthdays
+    for (const [role, parent] of Object.entries(config.parents)) {
+        if (role !== 'anniversary') {
+            const [year, month, day] = parent.birthday.split('/');
+            const key = `${parseInt(month)}-${parseInt(day)}`;
+            dates[key] = {
+                name: `${parent.name}'s Birthday`,
+                elements: ['text-happy', getFamilyMemberElementId(role), 'text-birthday']
+            };
+        }
+    }
+
+    // Add children's birthdays
+    config.children.forEach((child, index) => {
+        const [year, month, day] = child.birthday.split('/');
+        const key = `${parseInt(month)}-${parseInt(day)}`;
+        dates[key] = {
+            name: `${child.name}'s Birthday`,
+            elements: ['text-happy', getFamilyMemberElementId('child', index), 'text-birthday']
+        };
+    });
+
+    return dates;
+}
+
+// Generate special dates from config
+const SPECIAL_DATES = generateSpecialDates(FAMILY_CONFIG);
 
 // Dynamic special dates
 const DYNAMIC_DATES = {
@@ -114,7 +191,7 @@ var clock = {
     startClock: function(){
         setInterval(function(){
             clock.updateTime(new Date());
-        }, 2000)
+        }, 1999)
         clock.updateTime(new Date());
     },
 
@@ -231,11 +308,17 @@ var clock = {
             self.disableStyle('text-past');
             self.disableStyle('text-happy');
             self.disableStyle('text-anniversary');
-            self.disableStyle('text-yvette');
+            // Disable parent elements
+            self.disableStyle('text-mom');
+            self.disableStyle('text-dad');
             self.disableStyle('text-and');
-            self.disableStyle('text-carl');
-            self.disableStyle('text-nick');
-            self.disableStyle('text-alli');
+
+            // Disable child elements
+            for (let i = 1; i <= 4; i++) {
+                self.disableStyle(`text-child${i}`);
+            }
+
+            // Disable other elements
             self.disableStyle('text-mothers');
             self.disableStyle('text-fathers');
             self.disableStyle('text-birthday');
@@ -245,8 +328,6 @@ var clock = {
             self.disableStyle('text-new');
             self.disableStyle('text-year');
             self.disableStyle('text-christmas');
-            self.disableStyle('text-liam');
-            self.disableStyle('text-kristen');
 
             if (m < 5) {
                 self.enableStyle('text-oclock');
@@ -329,8 +410,26 @@ var clock = {
             date: null,
             theme: null,
             background: null,
-            controls: false
+            controls: false,
+            familyConfig: null,
+            title: 'Word Clock'
         };
+
+        if (params.has('title')) {
+            result.title = decodeURIComponent(params.get('title'));
+        }
+
+        if (params.has('family')) {
+            try {
+                const familyJson = decodeURIComponent(params.get('family'));
+                const parsedConfig = JSON.parse(familyJson);
+                if (validateFamilyConfig(parsedConfig)) {
+                    result.familyConfig = parsedConfig;
+                }
+            } catch (error) {
+                console.error('Invalid family configuration:', error);
+            }
+        }
 
         if (params.has('date')) {
             const [year, month, day] = params.get('date').split('-').map(Number);
@@ -359,11 +458,21 @@ var clock = {
         return result;
     },
 
+    updateTitle: function(title) {
+        const titleBar = document.querySelector('.clock .clock-title-bar');
+        if (titleBar) {
+            titleBar.style.setProperty('--title-text', `'${title}'`);
+        }
+    },
+
     applyTheme: function(theme) {
-        if (theme === 'terminal' || theme === 'dos' || theme === 'live-terminal') {
+        if (theme === 'mac1984' || theme === 'terminal' || theme === 'dos' || theme === 'live-terminal') {
             document.body.classList.add(theme);
             if (theme === 'live-terminal') {
                 this.initCursor();
+            }
+            if (theme === 'mac1984') {
+                this.updateTitle(this.getURLParams().title);
             }
         }
     },
@@ -371,7 +480,7 @@ var clock = {
     applyBackground: function(url) {
         if (url) {
             const clock = document.querySelector('.clock');
-            clock.style.backgroundImage = `url(${decodeURIComponent(url)})`;
+            clock.style.setProperty('--background-image', `url(${decodeURIComponent(url)})`);
             document.body.classList.add('has-background');
         }
     },
@@ -407,8 +516,37 @@ var clock = {
         });
     },
 
+    // Update HTML elements with family member names and remove unused elements
+    updateFamilyNames: function() {
+        // Update parents
+        document.getElementById('text-mom').textContent = FAMILY_CONFIG.parents.mom.name.toUpperCase();
+        document.getElementById('text-dad').textContent = FAMILY_CONFIG.parents.dad.name.toUpperCase();
+
+        // Handle children elements
+        for (let i = 1; i <= 4; i++) {
+            const element = document.getElementById(`text-child${i}`);
+            if (element) {
+                if (i <= FAMILY_CONFIG.children.length) {
+                    // Update child element
+                    element.textContent = FAMILY_CONFIG.children[i - 1].name.toUpperCase();
+                } else {
+                    // Remove unused child element
+                    element.parentNode.removeChild(element);
+                }
+            }
+        }
+    },
+
     init: function(){
         const params = clock.getURLParams();
+        
+        // Use URL family config if provided, otherwise use default
+        if (params.familyConfig) {
+            Object.assign(FAMILY_CONFIG, params.familyConfig);
+        }
+        
+        // Update family member names in HTML
+        this.updateFamilyNames();
         
         // Apply theme if specified
         if (params.theme) {
@@ -438,7 +576,7 @@ var clock = {
                 params.date.setMinutes(now.getMinutes());
                 params.date.setSeconds(now.getSeconds());
                 clock.updateTime(params.date);
-            }, 2000);
+            }, 1999);
             clock.updateTime(params.date);
         } else {
             // Otherwise start the normal clock
@@ -446,6 +584,227 @@ var clock = {
         }
     }
 };
+// Family Builder functionality
+const familyBuilder = {
+    showBuilder: function() {
+        document.querySelector('.modal-overlay').classList.add('visible');
+        document.querySelector('.family-builder').classList.add('visible');
+    },
+
+    hideBuilder: function() {
+        document.querySelector('.modal-overlay').classList.remove('visible');
+        document.querySelector('.family-builder').classList.remove('visible');
+    },
+
+    addChild: function(name = '', birthday = '') {
+        const container = document.getElementById('childrenEntries');
+        const childCount = container.children.length;
+        
+        if (childCount >= 4) {
+            document.getElementById('childError').style.display = 'block';
+            return;
+        }
+        
+        const childEntry = document.createElement('div');
+        childEntry.className = 'child-entry';
+        childEntry.innerHTML = `
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Child ${childCount + 1} Name:</label>
+                    <input type="text" class="childName" required value="${name}">
+                </div>
+                <div class="input-group">
+                    <label>Child ${childCount + 1} Birthday:</label>
+                    <input type="date" class="childBirthday" required value="${this.formatDateForInput(birthday)}">
+                </div>
+                ${childCount > 0 ? `
+                <button type="button" class="remove-child" title="Remove Child">✕</button>
+                ` : ''}
+            </div>
+        `;
+
+        // Add click handler for remove button if present
+        const removeButton = childEntry.querySelector('.remove-child');
+        if (removeButton) {
+            removeButton.addEventListener('click', () => {
+                childEntry.remove();
+                document.getElementById('addChild').style.display = 'block';
+                document.getElementById('childError').style.display = 'none';
+                // Update remaining child labels
+                this.updateChildLabels();
+            });
+        }
+        
+        container.appendChild(childEntry);
+        
+        if (childCount + 1 >= 4) {
+            document.getElementById('addChild').style.display = 'none';
+        }
+    },
+
+    formatDateForInput: function(dateStr) {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    },
+
+    populateForm: function() {
+        // Clear existing children entries
+        const container = document.getElementById('childrenEntries');
+        container.innerHTML = '';
+
+        // Set theme and title if they exist in URL
+        const params = new URLSearchParams(window.location.search);
+        const currentTheme = params.get('theme');
+        const currentTitle = params.get('title');
+        
+        if (currentTheme) {
+            document.getElementById('themeSelect').value = currentTheme;
+        }
+        if (currentTitle) {
+            document.getElementById('titleInput').value = decodeURIComponent(currentTitle);
+        }
+
+        // Populate parent data
+        document.getElementById('momName').value = FAMILY_CONFIG.parents.mom.name;
+        document.getElementById('momBirthday').value = this.formatDateForInput(FAMILY_CONFIG.parents.mom.birthday);
+        document.getElementById('dadName').value = FAMILY_CONFIG.parents.dad.name;
+        document.getElementById('dadBirthday').value = this.formatDateForInput(FAMILY_CONFIG.parents.dad.birthday);
+        document.getElementById('anniversary').value = this.formatDateForInput(FAMILY_CONFIG.parents.anniversary);
+
+        // Add children entries
+        FAMILY_CONFIG.children.forEach(child => {
+            this.addChild(child.name, child.birthday);
+        });
+    },
+
+    showBuilder: function() {
+        document.querySelector('.modal-overlay').classList.add('visible');
+        document.querySelector('.family-builder').classList.add('visible');
+        this.populateForm();
+    },
+
+    formatDate: function(dateString) {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`;
+    },
+
+    generateFamilyConfig: function() {
+        const formError = document.getElementById('formError');
+        formError.style.display = 'none';
+        
+        try {
+            // Get parents data
+            const config = {
+                parents: {
+                    mom: {
+                        name: document.getElementById('momName').value,
+                        birthday: this.formatDate(document.getElementById('momBirthday').value)
+                    },
+                    dad: {
+                        name: document.getElementById('dadName').value,
+                        birthday: this.formatDate(document.getElementById('dadBirthday').value)
+                    },
+                    anniversary: this.formatDate(document.getElementById('anniversary').value)
+                },
+                children: []
+            };
+
+            // Get children data
+            const childEntries = document.getElementById('childrenEntries').children;
+            for (let entry of childEntries) {
+                const name = entry.querySelector('.childName').value;
+                const birthday = entry.querySelector('.childBirthday').value;
+                if (name && birthday) {
+                    config.children.push({
+                        name: name,
+                        birthday: this.formatDate(birthday)
+                    });
+                }
+            }
+
+            // Validate configuration
+            validateFamilyConfig(config);
+
+            // Generate URL preserving existing parameters
+            const currentUrl = new URL(window.location.href);
+            const theme = document.getElementById('themeSelect').value;
+            
+            // Update or remove theme parameter
+            if (theme) {
+                currentUrl.searchParams.set('theme', theme);
+            } else {
+                currentUrl.searchParams.delete('theme');
+            }
+
+            // Get title if set
+            const title = document.getElementById('titleInput')?.value;
+            if (title) {
+                currentUrl.searchParams.set('title', title);
+            } else {
+                currentUrl.searchParams.delete('title');
+            }
+            
+            currentUrl.searchParams.set('family', JSON.stringify(config));
+            const generatedUrl = currentUrl.toString();
+
+            // Show and populate URL output
+            const urlOutput = document.querySelector('.url-output');
+            const urlInput = document.getElementById('generatedUrl');
+            urlOutput.style.display = 'block';
+            urlInput.value = generatedUrl;
+
+            // Add click-to-copy functionality
+            urlInput.addEventListener('click', function() {
+                this.select();
+                navigator.clipboard.writeText(this.value);
+                const copyHint = document.querySelector('.copy-hint');
+                copyHint.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyHint.textContent = 'Click to copy';
+                }, 1999);
+            });
+
+        } catch (error) {
+            formError.textContent = error.message;
+            formError.style.display = 'block';
+        }
+    },
+
+    hideBuilder: function() {
+        document.querySelector('.modal-overlay').classList.remove('visible');
+        document.querySelector('.family-builder').classList.remove('visible');
+        // Reset URL output
+        document.querySelector('.url-output').style.display = 'none';
+        document.getElementById('generatedUrl').value = '';
+        document.querySelector('.copy-hint').textContent = 'Click to copy';
+    },
+
+    updateChildLabels: function() {
+        const entries = document.getElementById('childrenEntries').children;
+        Array.from(entries).forEach((entry, index) => {
+            const nameLabel = entry.querySelector('label:first-child');
+            const birthdayLabel = entry.querySelector('label:last-of-type');
+            nameLabel.textContent = `Child ${index + 1} Name:`;
+            birthdayLabel.textContent = `Child ${index + 1} Birthday:`;
+        });
+    },
+
+    init: function() {
+        // Add click handler for "IT'S"
+        document.querySelector('.hl').addEventListener('click', () => this.showBuilder());
+
+        // Add click handlers for builder buttons
+        document.getElementById('addChild').addEventListener('click', () => this.addChild());
+        document.getElementById('generateUrl').addEventListener('click', () => this.generateFamilyConfig());
+        document.getElementById('closeBuilder').addEventListener('click', () => this.hideBuilder());
+        
+        // Close modal when clicking overlay
+        document.querySelector('.modal-overlay').addEventListener('click', () => this.hideBuilder());
+    }
+};
+
 window.onload = function(){
     clock.init();
+    familyBuilder.init();
 };
