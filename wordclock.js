@@ -467,6 +467,15 @@ var clock = {
     },
 
     applyTheme: function(theme) {
+        // Remove any existing theme classes
+        document.body.classList.remove('mac1984', 'terminal', 'dos', 'live-terminal');
+        
+        // Show/hide mac menu bar based on theme
+        const macMenuBar = document.querySelector('.mac-menubar');
+        if (macMenuBar) {
+            macMenuBar.style.display = theme === 'mac1984' ? 'block' : 'none';
+        }
+
         if (theme === 'mac1984' || theme === 'terminal' || theme === 'dos' || theme === 'live-terminal') {
             document.body.classList.add(theme);
             if (theme === 'live-terminal') {
