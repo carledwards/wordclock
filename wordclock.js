@@ -153,8 +153,9 @@ var clock = {
     },
     enableOccasionStyle: function(elementReference){
         var e = document.getElementById(elementReference);
-        if (!e || typeof e != "object") 
+        if (!e || typeof e != "object") {
             return;
+        }
         e.className = 'ho';
     },
     // Helper method to enable multiple elements with occasion style
@@ -168,13 +169,13 @@ var clock = {
         const da = moment.getDate();
         const yr = moment.getFullYear();
         
-        // Check fixed special dates
-        const dateKey = `${mo}-${da}`;
-        const specialDate = SPECIAL_DATES[dateKey];
-        if (specialDate) {
-            this.enableElements(specialDate.elements);
-            return true;
-        }
+    // Check fixed special dates
+    const dateKey = `${mo}-${da}`;
+    const specialDate = SPECIAL_DATES[dateKey];
+    if (specialDate) {
+        this.enableElements(specialDate.elements);
+        return true;
+    }
 
         // Check dynamic dates
         const currentDate = new Date(yr, mo-1, da, 0, 0, 0, 0).getTime();
@@ -384,7 +385,7 @@ var clock = {
                 }
             }
 
-            // Handle special dates
+            // Handle special dates first
             self.handleSpecialDates(moment);
 
             // Get new state after all styles are applied
@@ -543,6 +544,8 @@ var clock = {
         // Use URL family config if provided, otherwise use default
         if (params.familyConfig) {
             Object.assign(FAMILY_CONFIG, params.familyConfig);
+            // Regenerate special dates with new config
+            Object.assign(SPECIAL_DATES, generateSpecialDates(FAMILY_CONFIG));
         }
         
         // Update family member names in HTML
@@ -569,15 +572,17 @@ var clock = {
             this.updateTime(date);
         } else if (params.date) {
             // Handle date parameter
+            const initialDate = params.date;
             setInterval(function(){
                 const now = new Date();
-                // Update the custom date with current time
-                params.date.setHours(now.getHours());
-                params.date.setMinutes(now.getMinutes());
-                params.date.setSeconds(now.getSeconds());
-                clock.updateTime(params.date);
+                // Create a new date object to avoid modifying the original
+                const currentDate = new Date(initialDate);
+                currentDate.setHours(now.getHours());
+                currentDate.setMinutes(now.getMinutes());
+                currentDate.setSeconds(now.getSeconds());
+                clock.updateTime(currentDate);
             }, 1999);
-            clock.updateTime(params.date);
+            clock.updateTime(initialDate);
         } else {
             // Otherwise start the normal clock
             clock.startClock();
