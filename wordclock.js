@@ -189,11 +189,22 @@ var clock = {
         return false;
     },
     
+    clockInterval: null,
+    celebrationTimer: null,
+
     startClock: function(){
-        setInterval(function(){
+        this.stopClock(); // Clear any existing interval
+        this.clockInterval = setInterval(function(){
             clock.updateTime(new Date());
-        }, 1999)
+        }, 1999);
         clock.updateTime(new Date());
+    },
+
+    stopClock: function(){
+        if (this.clockInterval) {
+            clearInterval(this.clockInterval);
+            this.clockInterval = null;
+        }
     },
 
 
@@ -464,6 +475,134 @@ var clock = {
         }
     },
 
+    clearCelebrationTimer: function() {
+        if (this.celebrationTimer) {
+            clearTimeout(this.celebrationTimer);
+            this.celebrationTimer = null;
+        }
+    },
+
+    showTemporaryCelebrationDate: function(date) {
+        // Clear any existing celebration timer
+        this.clearCelebrationTimer();
+        
+        // Stop the clock while showing celebration date
+        this.stopClock();
+
+        // Parse the date string (format: YYYY/MM/DD)
+        const [year, month, day] = date.split('/').map(Number);
+        
+        // Create date object with current time
+        const now = new Date();
+        const celebrationDate = new Date(now.getFullYear(), month - 1, day, 
+            now.getHours(), 
+            now.getMinutes(), 
+            now.getSeconds()
+        );
+
+        // Update the display with celebration date
+        this.updateTime(celebrationDate);
+
+        // Reset to current time after 20 seconds
+        this.celebrationTimer = setTimeout(() => {
+            this.celebrationTimer = null;
+            // Update to current time
+            this.updateTime(new Date());
+            // Restart the clock if it was running
+            if (!this.getURLParams().controls && !this.getURLParams().date) {
+                this.startClock();
+            }
+        }, 20000);
+    },
+
+    addSpecialDateClickHandlers: function() {
+        // New Year
+        const yearElement = document.getElementById('text-year');
+        if (yearElement) {
+            yearElement.style.cursor = 'pointer';
+            yearElement.addEventListener('click', () => {
+                // New Year's Day is January 1st
+                this.showTemporaryCelebrationDate('2024/01/01');
+            });
+        }
+
+        // Christmas
+        ['text-merry', 'text-christmas'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.style.cursor = 'pointer';
+                element.addEventListener('click', () => {
+                    // Christmas is December 25th
+                    this.showTemporaryCelebrationDate('2024/12/25');
+                });
+            }
+        });
+
+        // Anniversary
+        const anniversaryElement = document.getElementById('text-anniversary');
+        if (anniversaryElement) {
+            anniversaryElement.style.cursor = 'pointer';
+            anniversaryElement.addEventListener('click', () => {
+                this.showTemporaryCelebrationDate(FAMILY_CONFIG.parents.anniversary);
+            });
+        }
+
+        // Mother's Day
+        const mothersElement = document.getElementById('text-mothers');
+        if (mothersElement) {
+            mothersElement.style.cursor = 'pointer';
+            mothersElement.addEventListener('click', () => {
+                const currentYear = new Date().getFullYear();
+                const mothersDay = DYNAMIC_DATES["Mother's Day"].getDate(currentYear);
+                const date = `${currentYear}/${String(mothersDay.getMonth() + 1).padStart(2, '0')}/${String(mothersDay.getDate()).padStart(2, '0')}`;
+                this.showTemporaryCelebrationDate(date);
+            });
+        }
+
+        // Father's Day
+        const fathersElement = document.getElementById('text-fathers');
+        if (fathersElement) {
+            fathersElement.style.cursor = 'pointer';
+            fathersElement.addEventListener('click', () => {
+                const currentYear = new Date().getFullYear();
+                const fathersDay = DYNAMIC_DATES["Father's Day"].getDate(currentYear);
+                const date = `${currentYear}/${String(fathersDay.getMonth() + 1).padStart(2, '0')}/${String(fathersDay.getDate()).padStart(2, '0')}`;
+                this.showTemporaryCelebrationDate(date);
+            });
+        }
+    },
+
+    addFamilyClickHandlers: function() {
+        // Add click handler for mom
+        const momElement = document.getElementById('text-mom');
+        if (momElement) {
+            momElement.style.cursor = 'pointer';
+            momElement.addEventListener('click', () => {
+                this.showTemporaryCelebrationDate(FAMILY_CONFIG.parents.mom.birthday);
+            });
+        }
+
+        // Add click handler for dad
+        const dadElement = document.getElementById('text-dad');
+        if (dadElement) {
+            dadElement.style.cursor = 'pointer';
+            dadElement.addEventListener('click', () => {
+                this.showTemporaryCelebrationDate(FAMILY_CONFIG.parents.dad.birthday);
+            });
+        }
+
+        // Add click handlers for children
+        FAMILY_CONFIG.children.forEach((child, index) => {
+            const childElement = document.getElementById(`text-child${index + 1}`);
+            if (childElement) {
+                childElement.style.cursor = 'pointer';
+                childElement.addEventListener('click', () => {
+                    this.showTemporaryCelebrationDate(child.birthday);
+                });
+            }
+        });
+    },
+
     init: function(){
         // Add click handler for O'CLOCK to cycle through themes
         document.getElementById('text-oclock').addEventListener('click', () => {
@@ -488,8 +627,10 @@ var clock = {
             Object.assign(SPECIAL_DATES, generateSpecialDates(FAMILY_CONFIG));
         }
         
-        // Update family member names in HTML
+        // Update family member names in HTML and add all click handlers
         this.updateFamilyNames();
+        this.addFamilyClickHandlers();
+        this.addSpecialDateClickHandlers();
         
         // Apply theme if specified
         if (params.theme) {
