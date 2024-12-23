@@ -196,72 +196,6 @@ var clock = {
         clock.updateTime(new Date());
     },
 
-    initCursor: function() {
-        const cursor = document.createElement('div');
-        cursor.className = 'cursor';
-        document.querySelector('.clock').appendChild(cursor);
-        this.cursor = cursor;
-    },
-
-    // Draw the entire display with cursor animation
-    animateCursor: function(callback) {
-        if (!this.cursor) return callback();
-
-        const clock = document.querySelector('.clock');
-        
-        // Clear screen instantly
-        clock.classList.add('clearing');
-        
-        // Hide all elements initially
-        document.querySelectorAll('.clock ul li').forEach(li => {
-            li.classList.add('hidden');
-        });
-
-        // Start cursor at top left
-        this.cursor.classList.add('moving');
-        this.cursor.style.left = '0.4rem';
-        this.cursor.style.top = '0.4rem';
-        this.cursor.style.right = '';
-        this.cursor.style.bottom = '';
-
-        clock.classList.remove('clearing');
-
-        // Get all elements in DOM order (naturally left-to-right, top-to-bottom)
-        const elements = Array.from(document.querySelectorAll('.clock ul li'));
-        let currentElement = 0;
-
-        const drawNext = () => {
-            if (currentElement >= elements.length) {
-                // Drawing complete, move cursor to bottom right
-                this.cursor.style.left = '';
-                this.cursor.style.right = '0.4rem';
-                this.cursor.style.top = '';
-                this.cursor.style.bottom = '0.4rem';
-                this.cursor.classList.remove('moving');
-                callback();
-                return;
-            }
-
-            const element = elements[currentElement];
-            const rect = element.getBoundingClientRect();
-            const clockRect = clock.getBoundingClientRect();
-
-            // Move cursor to element position
-            const relativeLeft = ((rect.left - clockRect.left) / clockRect.width) * 100;
-            const relativeTop = ((rect.top - clockRect.top) / clockRect.height) * 100;
-            this.cursor.style.left = `${relativeLeft - 0.2}%`;
-            this.cursor.style.top = `${relativeTop + 0.2}%`;
-
-            // Show element after cursor arrives
-            setTimeout(() => {
-                element.classList.remove('hidden');
-                currentElement++;
-                setTimeout(drawNext, 15);
-            }, 15);
-        };
-
-        drawNext();
-    },
 
     updateTime: function(moment){
         const self = this;
@@ -393,11 +327,11 @@ var clock = {
                 .map(li => li.className)
                 .join('');
 
-            // Only animate if state changed
+            // Only update if state changed
             if (newState !== this.currentState || this.currentState === '') {
                 this.currentState = newState;
-                if (this.cursor) {
-                    this.animateCursor(() => {});
+                if (this.themeManager?.getCurrentTheme()) {
+                    this.themeManager.getCurrentTheme().update();
                 }
             }
         };
@@ -460,31 +394,14 @@ var clock = {
     },
 
     updateTitle: function(title) {
-        const titleBar = document.querySelector('.clock .clock-title-bar');
-        if (titleBar) {
-            titleBar.style.setProperty('--title-text', `'${title}'`);
+        if (this.themeManager?.getCurrentTheme()) {
+            this.themeManager.getCurrentTheme().setTitle(title);
         }
     },
 
     applyTheme: function(theme) {
-        // Remove any existing theme classes
-        document.body.classList.remove('mac1984', 'terminal', 'dos', 'live-terminal');
-        
-        // Show/hide mac menu bar based on theme
-        const macMenuBar = document.querySelector('.mac-menubar');
-        if (macMenuBar) {
-            macMenuBar.style.display = theme === 'mac1984' ? 'block' : 'none';
-        }
-
-        if (theme === 'mac1984' || theme === 'terminal' || theme === 'dos' || theme === 'live-terminal') {
-            document.body.classList.add(theme);
-            if (theme === 'live-terminal') {
-                this.initCursor();
-            }
-            if (theme === 'mac1984') {
-                this.updateTitle(this.getURLParams().title);
-            }
-        }
+        this.themeManager = window.themeManager;
+        this.themeManager.setTheme(theme, this.getURLParams().title);
     },
 
     applyBackground: function(url) {
@@ -667,14 +584,28 @@ const familyBuilder = {
         const container = document.getElementById('childrenEntries');
         container.innerHTML = '';
 
-        // Set theme and title if they exist in URL
+        // Populate theme select with available themes
+        const themeSelect = document.getElementById('themeSelect');
+        themeSelect.innerHTML = ''; // Clear existing options
+        
+        window.themeManager.getThemeNames().forEach(themeName => {
+            const option = document.createElement('option');
+            option.value = themeName;
+            option.textContent = themeName.charAt(0).toUpperCase() + themeName.slice(1).replace('-', ' ');
+            themeSelect.appendChild(option);
+        });
+        
+        // Get URL parameters
         const params = new URLSearchParams(window.location.search);
         const currentTheme = params.get('theme');
         const currentTitle = params.get('title');
         
+        // Set theme if it exists
         if (currentTheme) {
-            document.getElementById('themeSelect').value = currentTheme;
+            themeSelect.value = currentTheme;
         }
+
+        // Set title if it exists
         if (currentTitle) {
             document.getElementById('titleInput').value = decodeURIComponent(currentTitle);
         }
