@@ -465,6 +465,20 @@ var clock = {
     },
 
     init: function(){
+        // Add click handler for O'CLOCK to cycle through themes
+        document.getElementById('text-oclock').addEventListener('click', () => {
+            const themeNames = this.themeManager.getThemeNames();
+            const currentTheme = this.themeManager.getCurrentTheme()?.name || 'default';
+            const currentIndex = themeNames.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themeNames.length;
+            const nextTheme = themeNames[nextIndex];
+            
+            // Update URL with new theme and reload
+            const url = new URL(window.location.href);
+            url.searchParams.set('theme', nextTheme);
+            window.location.href = url.toString();
+        });
+
         const params = clock.getURLParams();
         
         // Use URL family config if provided, otherwise use default

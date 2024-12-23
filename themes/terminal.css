@@ -13,8 +13,8 @@
 }
 
 /* Terminal specific styles */
-.terminal .clock {
-  font-size: min(5.5vh, 3.8rem);
+.terminal .live-terminal .clock {
+  font-size: min(5.4vh, 4.2rem);
   font-weight: bold;
   text-transform: uppercase;
   border-width: 1px;
