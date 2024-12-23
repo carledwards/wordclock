@@ -1,0 +1,210 @@
+/* 1984 Macintosh theme */
+.mac1984 {
+  --bg-color: #666666;
+  --window-bg: #ffffff;
+  --border-color: #000000;
+  --active-color: #000000;
+  --inactive-color: #cccccc;
+  --special-color: #000000;
+  --font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --border-radius: 3px;
+  --box-shadow: none;
+}
+
+/* Mac 1984 specific highlighting styles */
+.mac1984 .hl {
+  color: var(--active-color);
+  text-shadow: 2.5px 2.5px 0px rgba(0, 0, 0, 0.3);
+  font-weight: 900;
+  font-size: 1.05em;
+  position: relative;
+  z-index: 1;
+}
+
+.mac1984 .ho {
+  color: white;
+  -webkit-text-stroke: 2px black;
+  text-stroke: 2px black;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-shadow: 2.5px 2.5px 0px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+  font-size: 1.1em;
+}
+
+.mac1984 .mac-menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: white;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 13px;
+  z-index: 1000;
+  font-weight: bold;
+}
+
+.mac1984 .apple-logo {
+  font-size: 14px;
+  margin-right: 16px;
+  color: black;
+  filter: grayscale(100%) brightness(0);
+}
+
+.mac1984 .menu-items span {
+  margin-right: 16px;
+  cursor: default;
+}
+
+.mac1984 .clock-container {
+  padding-top: 40px;
+}
+
+.mac1984 .clock {
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  box-shadow: none;
+  position: relative;
+  padding: 1.5rem 2rem;
+}
+
+.mac1984 .close-button {
+  position: absolute;
+  top: -18px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  cursor: default;
+  z-index: 2;
+}
+
+.mac1984 .close-button::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border: 1px solid black;
+}
+
+.mac1984 .clock .clock-title-bar {
+  position: absolute;
+  top: -22px;
+  left: -2px;
+  right: -2px;
+  height: 24px;
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  border-bottom: none;
+  display: block !important;
+  z-index: 1;
+}
+
+/* Create centered title text with white background */
+.mac1984 .clock .clock-title-bar {
+  --title-text: 'Word Clock';
+}
+
+.mac1984 .clock .clock-title-bar::after {
+  content: var(--title-text);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 0 10px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 3;
+}
+
+.mac1984 .clock .stripes {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    180deg,
+    #000 0,
+    #000 0.7px,
+    transparent 1px,
+    transparent 2.6px
+  );
+  display: block !important;
+}
+
+.mac1984 .clock .bottom-line {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #000;
+  display: block !important;
+}
+
+.mac1984 ul {
+  font-weight: bold;
+}
+
+.mac1984 .time-controls {
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  margin-top: 30px;
+  padding: 8px;
+  border-radius: var(--border-radius);
+}
+
+.mac1984 .time-controls input,
+.mac1984 .time-controls button {
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  color: var(--active-color);
+  border-radius: var(--border-radius);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.mac1984 .time-controls button:active {
+  background: #000000;
+  color: #ffffff;
+}
+
+/* Mac 1984 theme specific modal styles */
+.mac1984 .family-builder {
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  box-shadow: none;
+}
+
+.mac1984 .family-builder input,
+.mac1984 .family-builder select,
+.mac1984 .family-builder button {
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+}
+
+.mac1984 .family-builder select {
+  color: black;
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 0.8em;
+  padding-right: 2rem;
+}
+
+.mac1984 .family-builder .form-group:first-of-type {
+  background: var(--window-bg);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem;
+}

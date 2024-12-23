@@ -1,0 +1,13 @@
+:root {
+  --bg-color: #000;
+  --border-color: #333;
+  --active-color: #ffffff;
+  --inactive-color: #303030;
+  --special-color: #00d4bf;
+  --font-family: Verdana;
+  --border-radius: 10px;
+  --box-shadow: 
+    inset 0 0 50px rgba(0, 0, 0, 0.9),
+    inset 0 0 20px rgba(0, 174, 157, 0.15),
+    0 0 15px rgba(0, 174, 157, 0.15);
+}

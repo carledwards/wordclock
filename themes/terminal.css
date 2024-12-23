@@ -1,0 +1,57 @@
+/* Terminal theme */
+.terminal, .live-terminal {
+  --bg-color: #000;
+  --border-color: #00ff00;
+  --active-color: #00ff00;
+  --inactive-color: #004400;
+  --special-color: #ffff00;
+  --font-family: "Courier New", monospace;
+  --border-radius: 0;
+  --box-shadow: 
+    0 0 2px #00ff00,
+    inset 0 0 2px #00ff00;
+}
+
+/* Terminal specific styles */
+.terminal .clock {
+  font-size: min(5.5vh, 3.8rem);
+  font-weight: bold;
+  text-transform: uppercase;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.terminal .clock::before,
+.live-terminal .clock::before {
+  background: none;
+}
+
+/* Terminal theme specific controls */
+.terminal .time-controls,
+.live-terminal .time-controls {
+  border: 1px solid var(--active-color);
+  box-shadow: 0 0 2px var(--active-color);
+  padding: 0.75rem 1rem;
+}
+
+.terminal .time-controls input,
+.live-terminal .time-controls input {
+  background: var(--bg-color);
+  border: 1px solid var(--active-color);
+  box-shadow: 0 0 2px var(--active-color) inset;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
+
+.terminal .time-controls button,
+.live-terminal .time-controls button {
+  border: 1px solid var(--active-color);
+  box-shadow: 0 0 2px var(--active-color);
+  padding: 0.25rem 1rem;
+  font-size: 1rem;
+}
+
+.terminal .hl,
+.terminal .ho {
+  text-shadow: none;
+}

@@ -1,231 +1,15 @@
-:root {
-  --bg-color: #000;
-  --border-color: #333;
-  --active-color: #ffffff;
-  --inactive-color: #303030;
-  --special-color: #00d4bf;
-  --font-family: Verdana;
-  --border-radius: 10px;
-  --box-shadow: 
-    inset 0 0 50px rgba(0, 0, 0, 0.9),
-    inset 0 0 20px rgba(0, 174, 157, 0.15),
-    0 0 15px rgba(0, 174, 157, 0.15);
-}
-
-/* Terminal theme */
-.terminal, .live-terminal {
-  --bg-color: #000;
-  --border-color: #00ff00;
-  --active-color: #00ff00;
-  --inactive-color: #004400;
-  --special-color: #ffff00;
-  --font-family: "Courier New", monospace;
-  --border-radius: 0;
-  --box-shadow: 
-    0 0 2px #00ff00,
-    inset 0 0 2px #00ff00;
-}
-
-/* DOS theme */
-.dos {
-  --bg-color: #000080;
-  --border-color: #ffffff;
-  --active-color: #ffffff;
-  --inactive-color: #808080;
-  --special-color: #ffff00;
-  --font-family: "Lucida Console", "Monaco", monospace;
-  --border-radius: 0;
-  --box-shadow: none;
-  letter-spacing: 0;
-  font-size: 0.95em;
-}
-
-/* 1984 Macintosh theme */
-.mac1984 {
-  --bg-color: #666666;
-  --window-bg: #ffffff;
-  --border-color: #000000;
-  --active-color: #000000;
-  --inactive-color: #cccccc;
-  --special-color: #000000;
-  --font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --border-radius: 3px;
-  --box-shadow: none;
-}
-
-/* Mac 1984 specific highlighting styles */
-.mac1984 .hl {
-  color: var(--active-color);
-  text-shadow: 2.5px 2.5px 0px rgba(0, 0, 0, 0.3);
-  font-weight: 900;
-  font-size: 1.05em;
-  position: relative;
-  z-index: 1;
-}
-
-.mac1984 .ho {
-  color: white;
-  -webkit-text-stroke: 2px black;
-  text-stroke: 2px black;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  text-shadow: 2.5px 2.5px 0px rgba(0, 0, 0, 0.3);
-  position: relative;
-  z-index: 1;
-  font-size: 1.1em;
-}
-
-.mac1984 .mac-menubar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background: white;
-  border-bottom: 1px solid black;
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  font-size: 13px;
-  z-index: 1000;
-  font-weight: bold;
-}
-
-.mac1984 .apple-logo {
-  font-size: 14px;
-  margin-right: 16px;
-  color: black;
-  filter: grayscale(100%) brightness(0);
-}
-
-.mac1984 .menu-items span {
-  margin-right: 16px;
-  cursor: default;
-}
-
-.mac1984 .clock-container {
-  padding-top: 40px;
-}
-
-.mac1984 .clock {
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-  box-shadow: none;
-  position: relative;
-  padding: 1.5rem 2rem;
-}
-
-.mac1984 .close-button {
-  position: absolute;
-  top: -18px;
-  left: 8px;
-  width: 20px;      /* Larger size for white background */
-  height: 20px;
-  background: white; /* White background */
-  cursor: default;
-  z-index: 2;
-}
-
-.mac1984 .close-button::before {
-  content: '';
-  position: absolute;
-  top: 4px;         /* Position relative to parent */
-  left: 3px;
-  width: 12px;      /* Smaller black-bordered box */
-  height: 12px;
-  background: white;
-  border: 1px solid black;
-}
-
-.mac1984 .clock .clock-title-bar {
-  position: absolute;
-  top: -22px;
-  left: -2px;
-  right: -2px;
-  height: 24px;
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-  border-bottom: none;
-  display: block !important;
-  z-index: 1;
-}
-
-/* Create centered title text with white background */
-.mac1984 .clock .clock-title-bar {
-  --title-text: 'Word Clock';
-}
-
-.mac1984 .clock .clock-title-bar::after {
-  content: var(--title-text);  /* The title text */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 0 10px;    /* White space on sides of text */
-  font-weight: bold;
-  font-size: 14px;
-  z-index: 3;         /* Above the stripes */
-}
-
-.mac1984 .clock .stripes {
-  position: absolute;
-  top: 6px;
-  left: 0;
-  right: 0;
-  height: 14px;
-  background-image: repeating-linear-gradient(
-    180deg,
-    #000 0,
-    #000 0.7px,          /* Thicker line - increased from 0.5px */
-    transparent 1px,    /* Start gap right after line */
-    transparent 2.6px     /* Slightly more space between lines */
-  );
-  display: block !important;
-}
-
-.mac1984 .clock .bottom-line {
-  position: absolute;
-  top: 24px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #000;
-  display: block !important;
-}
+/* Import theme files */
+@import url('themes/default.css');
+@import url('themes/terminal.css');
+@import url('themes/live-terminal.css');
+@import url('themes/dos.css');
+@import url('themes/mac1984.css');
 
 /* Hide these elements for all other themes */
 .clock-title-bar,
 .stripes,
 .bottom-line {
   display: none;
-}
-
-.mac1984 ul {
-  font-weight: bold;
-}
-
-.mac1984 .time-controls {
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-  margin-top: 30px;
-  padding: 8px;
-  border-radius: var(--border-radius);
-}
-
-.mac1984 .time-controls input,
-.mac1984 .time-controls button {
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-  color: var(--active-color);
-  border-radius: var(--border-radius);
-  padding: 4px 8px;
-  cursor: pointer;
-}
-
-.mac1984 .time-controls button:active {
-  background: #000000;
-  color: #ffffff;
 }
 
 html, body {
@@ -306,6 +90,23 @@ body.has-background .norm {
   transform-origin: center center;
 }
 
+.clock::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+  border-radius: var(--border-radius);
+}
+
 /* Responsive scaling */
 @media (max-width: 1600px) {
   .clock {
@@ -361,110 +162,6 @@ body.has-background .norm {
   }
 }
 
-/* Terminal specific styles */
-.terminal .clock {
-  font-size: min(5.5vh, 3.8rem);
-  font-weight: bold;
-  text-transform: uppercase;
-  border-width: 1px;
-  border-style: solid;
-}
-
-/* DOS specific styles */
-.dos .clock {
-  position: relative;
-  border: none;
-  padding: 1.5rem;
-  margin: 1.5rem;
-  font-weight: normal;
-  text-transform: uppercase;
-  letter-spacing: 0;
-}
-
-/* DOS border */
-.dos .clock::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  border: 2px solid var(--border-color);
-  border-style: double;
-  pointer-events: none;
-}
-
-.clock::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0) 50%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  pointer-events: none;
-  border-radius: var(--border-radius);
-}
-
-.terminal .clock::before,
-.dos .clock::before,
-.live-terminal .clock::before {
-  background: none;
-}
-
-/* Live Terminal theme additions */
-.live-terminal .clock {
-  position: relative;
-}
-
-.live-terminal .cursor {
-  position: absolute;
-  bottom: 0.4rem;
-  right: 0.4rem;
-  width: 0.8em;
-  height: 1.2em;
-  background-color: #00ff00;
-  animation: blink 1s step-end infinite;
-  opacity: 0.8;
-  z-index: 2;
-  font-size: min(5.4vh, 4.2rem);
-}
-
-@keyframes blink {
-  0% { opacity: 0.8; }
-  50% { opacity: 0; }
-}
-
-.live-terminal .cursor.moving {
-  animation: none;
-  opacity: 1;
-  transition: all 0.01s linear;
-}
-
-.live-terminal li {
-  transition: opacity 0.01s linear;
-}
-
-.live-terminal li.hidden {
-  opacity: 0;
-}
-
-.live-terminal .clock.clearing * {
-  opacity: 0;
-  transition: none;
-}
-
-.live-terminal .cursor.moving {
-  animation: none;
-  opacity: 1;
-  transition: all 0.02s linear;
-}
-
 ul {
   height: auto;
   list-style: none;
@@ -488,19 +185,9 @@ ul:last-child {
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.4);
 }
 
-.terminal .hl,
-.dos .hl {
-  text-shadow: none;
-}
-
 .ho {
   color: var(--special-color);
   text-shadow: 0 0 2px rgba(0, 212, 191, 0.4);
-}
-
-.terminal .ho,
-.dos .ho {
-  text-shadow: none;
 }
 
 .norm {
@@ -555,31 +242,6 @@ body.has-background .norm {
 .time-controls button:hover {
   background: var(--active-color);
   color: var(--bg-color);
-}
-
-/* Terminal theme specific controls */
-.terminal .time-controls,
-.live-terminal .time-controls {
-  border: 1px solid var(--active-color);
-  box-shadow: 0 0 2px var(--active-color);
-  padding: 0.75rem 1rem;
-}
-
-.terminal .time-controls input,
-.live-terminal .time-controls input {
-  background: var(--bg-color);
-  border: 1px solid var(--active-color);
-  box-shadow: 0 0 2px var(--active-color) inset;
-  padding: 0.25rem 0.5rem;
-  font-size: 1rem;
-}
-
-.terminal .time-controls button,
-.live-terminal .time-controls button {
-  border: 1px solid var(--active-color);
-  box-shadow: 0 0 2px var(--active-color);
-  padding: 0.25rem 1rem;
-  font-size: 1rem;
 }
 
 .time-controls label {
@@ -658,12 +320,6 @@ body.has-background .norm {
   margin: 0 auto;
 }
 
-.mac1984 .family-builder .form-group:first-of-type {
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-  padding: 0.75rem;
-}
-
 .family-builder .input-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -704,7 +360,7 @@ body.has-background .norm {
 }
 
 .family-builder .input-group {
-  min-width: 0; /* Prevents items from overflowing */
+  min-width: 0;
   width: 100%;
 }
 
@@ -879,32 +535,8 @@ body.has-background .norm {
   display: block;
 }
 
-/* Mac 1984 theme specific modal styles */
-.mac1984 .family-builder {
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-  box-shadow: none;
-}
-
-.mac1984 .family-builder input,
-.mac1984 .family-builder select,
-.mac1984 .family-builder button {
-  background: var(--window-bg);
-  border: 2px solid var(--border-color);
-}
-
 .family-builder select {
   appearance: none;
   cursor: pointer;
   font-family: inherit;
-}
-
-.mac1984 .family-builder select {
-  color: black;
-  background-color: white;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 0.8em;
-  padding-right: 2rem;
 }

@@ -1,0 +1,47 @@
+/* Live Terminal theme additions */
+.live-terminal .clock {
+  position: relative;
+}
+
+.live-terminal .cursor {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0.4rem;
+  width: 0.8em;
+  height: 1.2em;
+  background-color: #00ff00;
+  animation: blink 1s step-end infinite;
+  opacity: 0.8;
+  z-index: 2;
+  font-size: min(5.4vh, 4.2rem);
+}
+
+@keyframes blink {
+  0% { opacity: 0.8; }
+  50% { opacity: 0; }
+}
+
+.live-terminal .cursor.moving {
+  animation: none;
+  opacity: 1;
+  transition: all 0.01s linear;
+}
+
+.live-terminal li {
+  transition: opacity 0.01s linear;
+}
+
+.live-terminal li.hidden {
+  opacity: 0;
+}
+
+.live-terminal .clock.clearing * {
+  opacity: 0;
+  transition: none;
+}
+
+.live-terminal .cursor.moving {
+  animation: none;
+  opacity: 1;
+  transition: all 0.02s linear;
+}
