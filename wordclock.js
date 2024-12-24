@@ -901,6 +901,13 @@ const familyBuilder = {
         
         // Close dialog when clicking overlay
         document.querySelector('.dialog-overlay').addEventListener('click', () => this.hideBuilder());
+
+        // Close dialog when pressing ESC key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.hideBuilder();
+            }
+        });
     }
 };
 
