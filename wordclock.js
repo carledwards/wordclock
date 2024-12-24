@@ -160,7 +160,16 @@ var clock = {
     },
     // Helper method to enable multiple elements with occasion style
     enableElements: function(elements) {
-        elements.forEach(element => this.enableOccasionStyle(element));
+        elements.forEach(element => {
+            // Keep HAPPY clickable even during special dates
+            if (element === 'text-happy') {
+                const happyElement = document.getElementById(element);
+                happyElement.className = 'ho';
+                happyElement.style.cursor = 'pointer';
+            } else {
+                this.enableOccasionStyle(element);
+            }
+        });
     },
 
     // Helper method to check and handle special dates
@@ -252,7 +261,7 @@ var clock = {
             self.disableStyle('text-minutes');
             self.disableStyle('text-to');
             self.disableStyle('text-past');
-            self.disableStyle('text-happy');
+            // Don't disable HAPPY as it's handled in init()
             self.disableStyle('text-anniversary');
             // Disable parent elements
             self.disableStyle('text-mom');
@@ -604,6 +613,11 @@ var clock = {
     },
 
     init: function(){
+        // Make HAPPY clickable but not highlighted
+        const happyElement = document.getElementById('text-happy');
+        happyElement.className = 'norm';
+        happyElement.style.cursor = 'pointer';
+        
         // Add click handler for O'CLOCK to cycle through themes
         document.getElementById('text-oclock').addEventListener('click', () => {
             const themeNames = this.themeManager.getThemeNames();
@@ -911,7 +925,126 @@ const familyBuilder = {
     }
 };
 
+// Days Until functionality
+const daysUntil = {
+    calculateDaysUntil: function(dateStr) {
+        const [year, month, day] = dateStr.split('/').map(Number);
+        const today = new Date();
+        const eventDate = new Date(today.getFullYear(), month - 1, day);
+        
+        // If the event has already occurred this year, look at next year
+        if (eventDate < today) {
+            eventDate.setFullYear(today.getFullYear() + 1);
+        }
+        
+        const diffTime = Math.abs(eventDate - today);
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    },
+
+    getAllEvents: function() {
+        const events = [];
+        
+        // Add fixed holidays
+        events.push({
+            name: "Christmas",
+            date: "2024/12/25"
+        });
+        events.push({
+            name: "New Year",
+            date: "2024/01/01"
+        });
+        
+        // Add anniversary
+        events.push({
+            name: "Anniversary",
+            date: FAMILY_CONFIG.parents.anniversary
+        });
+        
+        // Add parents' birthdays
+        events.push({
+            name: `${FAMILY_CONFIG.parents.mom.name}'s Birthday`,
+            date: FAMILY_CONFIG.parents.mom.birthday
+        });
+        events.push({
+            name: `${FAMILY_CONFIG.parents.dad.name}'s Birthday`,
+            date: FAMILY_CONFIG.parents.dad.birthday
+        });
+        
+        // Add children's birthdays
+        FAMILY_CONFIG.children.forEach(child => {
+            events.push({
+                name: `${child.name}'s Birthday`,
+                date: child.birthday
+            });
+        });
+        
+        // Add dynamic dates for current year
+        const currentYear = new Date().getFullYear();
+        const mothersDay = DYNAMIC_DATES["Mother's Day"].getDate(currentYear);
+        const fathersDay = DYNAMIC_DATES["Father's Day"].getDate(currentYear);
+        
+        events.push({
+            name: "Mother's Day",
+            date: `${currentYear}/${mothersDay.getMonth() + 1}/${mothersDay.getDate()}`
+        });
+        events.push({
+            name: "Father's Day",
+            date: `${currentYear}/${fathersDay.getMonth() + 1}/${fathersDay.getDate()}`
+        });
+        
+        return events;
+    },
+
+    showDialog: function() {
+        const events = this.getAllEvents();
+        const sortedEvents = events.sort((a, b) => {
+            return this.calculateDaysUntil(a.date) - this.calculateDaysUntil(b.date);
+        });
+        
+        const listContainer = document.getElementById('daysUntilList');
+        listContainer.innerHTML = '';
+        
+        sortedEvents.forEach(event => {
+            const days = this.calculateDaysUntil(event.date);
+            const item = document.createElement('div');
+            item.className = 'days-until-item';
+            item.innerHTML = `
+                <span class="event-name">${event.name}</span>
+                <span class="days-count">${days} day${days === 1 ? '' : 's'}</span>
+            `;
+            listContainer.appendChild(item);
+        });
+        
+        document.getElementById('daysUntilOverlay').classList.add('visible');
+        document.getElementById('daysUntilDialog').classList.add('visible');
+    },
+
+    hideDialog: function() {
+        document.getElementById('daysUntilOverlay').classList.remove('visible');
+        document.getElementById('daysUntilDialog').classList.remove('visible');
+    },
+
+    init: function() {
+        // Add click handler for HAPPY to show days until
+        document.getElementById('text-happy').addEventListener('click', () => this.showDialog());
+        
+        // Add click handler for Done button
+        document.getElementById('closeDaysUntil').addEventListener('click', () => this.hideDialog());
+        
+        // Add click handler for overlay
+        document.getElementById('daysUntilOverlay').addEventListener('click', () => this.hideDialog());
+        
+        // Add ESC key handler
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.hideDialog();
+            }
+        });
+    }
+};
+
 window.onload = function(){
     clock.init();
     familyBuilder.init();
+    daysUntil.init();
 };
