@@ -673,13 +673,13 @@ var clock = {
 // Family Builder functionality
 const familyBuilder = {
     showBuilder: function() {
-        document.querySelector('.modal-overlay').classList.add('visible');
-        document.querySelector('.family-builder').classList.add('visible');
+        document.querySelector('.dialog-overlay').classList.add('visible');
+        document.querySelector('.dialog').classList.add('visible');
     },
 
     hideBuilder: function() {
-        document.querySelector('.modal-overlay').classList.remove('visible');
-        document.querySelector('.family-builder').classList.remove('visible');
+        document.querySelector('.dialog-overlay').classList.remove('visible');
+        document.querySelector('.dialog').classList.remove('visible');
     },
 
     addChild: function(name = '', birthday = '') {
@@ -779,8 +779,8 @@ const familyBuilder = {
     },
 
     showBuilder: function() {
-        document.querySelector('.modal-overlay').classList.add('visible');
-        document.querySelector('.family-builder').classList.add('visible');
+        document.querySelector('.dialog-overlay').classList.add('visible');
+        document.querySelector('.dialog').classList.add('visible');
         this.populateForm();
     },
 
@@ -872,8 +872,8 @@ const familyBuilder = {
     },
 
     hideBuilder: function() {
-        document.querySelector('.modal-overlay').classList.remove('visible');
-        document.querySelector('.family-builder').classList.remove('visible');
+        document.querySelector('.dialog-overlay').classList.remove('visible');
+        document.querySelector('.dialog').classList.remove('visible');
         // Reset URL output
         document.querySelector('.url-output').style.display = 'none';
         document.getElementById('generatedUrl').value = '';
@@ -899,8 +899,8 @@ const familyBuilder = {
         document.getElementById('generateUrl').addEventListener('click', () => this.generateFamilyConfig());
         document.getElementById('closeBuilder').addEventListener('click', () => this.hideBuilder());
         
-        // Close modal when clicking overlay
-        document.querySelector('.modal-overlay').addEventListener('click', () => this.hideBuilder());
+        // Close dialog when clicking overlay
+        document.querySelector('.dialog-overlay').addEventListener('click', () => this.hideBuilder());
     }
 };
 

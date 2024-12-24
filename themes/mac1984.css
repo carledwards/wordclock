@@ -30,7 +30,7 @@
   text-shadow: 2.5px 2.5px 0px rgba(0, 0, 0, 0.3);
   position: relative;
   z-index: 1;
-  font-size: 1.1em;
+  font-size: min(15vh, min(3.8rem, 3.2vw));
 }
 
 .mac1984 .mac-menubar {
@@ -180,20 +180,20 @@
 }
 
 /* Mac 1984 theme specific modal styles */
-.mac1984 .family-builder {
+.mac1984 .dialog {
   background: var(--window-bg);
   border: 2px solid var(--border-color);
   box-shadow: none;
 }
 
-.mac1984 .family-builder input,
-.mac1984 .family-builder select,
-.mac1984 .family-builder button {
+.mac1984 .dialog input,
+.mac1984 .dialog select,
+.mac1984 .dialog button {
   background: var(--window-bg);
   border: 2px solid var(--border-color);
 }
 
-.mac1984 .family-builder select {
+.mac1984 .dialog select {
   color: black;
   background-color: white;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -203,7 +203,7 @@
   padding-right: 2rem;
 }
 
-.mac1984 .family-builder .form-group:first-of-type {
+.mac1984 .dialog .form-group:first-of-type {
   background: var(--window-bg);
   border: 2px solid var(--border-color);
   padding: 0.75rem;

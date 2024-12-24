@@ -228,8 +228,8 @@ body.has-background .norm {
   color: var(--active-color);
 }
 
-/* Family Builder Modal */
-.family-builder {
+/* Dialog Styles */
+.dialog {
   display: none;
   position: fixed;
   top: 50%;
@@ -248,25 +248,25 @@ body.has-background .norm {
   overflow-y: auto;
 }
 
-.family-builder::-webkit-scrollbar {
+.dialog::-webkit-scrollbar {
   width: 8px;
 }
 
-.family-builder::-webkit-scrollbar-track {
+.dialog::-webkit-scrollbar-track {
   background: rgba(128, 128, 128, 0.1);
   border-radius: 4px;
 }
 
-.family-builder::-webkit-scrollbar-thumb {
+.dialog::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: 4px;
 }
 
-.family-builder.visible {
+.dialog.visible {
   display: block;
 }
 
-.family-builder h2 {
+.dialog h2 {
   color: var(--active-color);
   margin-top: 0;
   margin-bottom: 1.5rem;
@@ -274,14 +274,14 @@ body.has-background .norm {
   font-size: 1.8em;
 }
 
-.family-builder h3 {
+.dialog h3 {
   color: var(--active-color);
   margin-top: 0;
   margin-bottom: 1rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.family-builder .form-group {
+.dialog .form-group {
   margin-bottom: 1.5rem;
   background: rgba(128, 128, 128, 0.15);
   padding: 1.5rem;
@@ -290,17 +290,17 @@ body.has-background .norm {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.family-builder .form-group:first-of-type {
+.dialog .form-group:first-of-type {
   margin-bottom: 2rem;
   padding: 1rem;
 }
 
-.family-builder .form-group:first-of-type .input-group {
+.dialog .form-group:first-of-type .input-group {
   max-width: 300px;
   margin: 0 auto;
 }
 
-.family-builder .input-row {
+.dialog .input-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1.5rem;
@@ -309,7 +309,7 @@ body.has-background .norm {
   padding-right: 2.5rem;
 }
 
-.family-builder .remove-child {
+.dialog .remove-child {
   position: absolute;
   right: -0.5rem;
   top: 50%;
@@ -330,27 +330,27 @@ body.has-background .norm {
   justify-content: center;
 }
 
-.family-builder .remove-child:hover {
+.dialog .remove-child:hover {
   color: #ff4444;
   transform: translateY(-50%) scale(1.1);
 }
 
-.family-builder .remove-child:active {
+.dialog .remove-child:active {
   transform: translateY(-50%) scale(0.95);
 }
 
-.family-builder .input-group {
+.dialog .input-group {
   min-width: 0;
   width: 100%;
 }
 
-.family-builder .input-group input[type="date"],
-.family-builder .input-group input[type="text"] {
+.dialog .input-group input[type="date"],
+.dialog .input-group input[type="text"] {
   width: 100%;
   box-sizing: border-box;
 }
 
-.family-builder label {
+.dialog label {
   display: block;
   color: var(--active-color);
   margin-bottom: 0.5rem;
@@ -358,8 +358,8 @@ body.has-background .norm {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.family-builder input,
-.family-builder select {
+.dialog input,
+.dialog select {
   width: 100%;
   padding: 0.75rem;
   background: rgba(0, 0, 0, 0.2);
@@ -370,20 +370,20 @@ body.has-background .norm {
   transition: all 0.2s ease;
 }
 
-.family-builder input:focus,
-.family-builder select:focus {
+.dialog input:focus,
+.dialog select:focus {
   outline: none;
   border-color: var(--special-color);
   box-shadow: 0 0 0 2px rgba(0, 212, 191, 0.2);
 }
 
-.family-builder .children-container {
+.dialog .children-container {
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(128, 128, 128, 0.2);
 }
 
-.family-builder .child-entry {
+.dialog .child-entry {
   margin-bottom: 1rem;
   padding: 1rem;
   border: 1px solid var(--border-color);
@@ -392,22 +392,22 @@ body.has-background .norm {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-.family-builder .child-entry .input-group {
+.dialog .child-entry .input-group {
   width: 100%;
   min-width: 0;
 }
 
-.family-builder .child-entry input[type="text"],
-.family-builder .child-entry input[type="date"] {
+.dialog .child-entry input[type="text"],
+.dialog .child-entry input[type="date"] {
   width: 100%;
   box-sizing: border-box;
 }
 
-.family-builder .child-entry .input-row {
+.dialog .child-entry .input-row {
   margin-bottom: 0;
 }
 
-.family-builder .buttons {
+.dialog .buttons {
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
@@ -415,7 +415,7 @@ body.has-background .norm {
   border-top: 1px solid rgba(128, 128, 128, 0.2);
 }
 
-.family-builder button {
+.dialog button {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(to bottom, 
     rgba(128, 128, 128, 0.2),
@@ -430,7 +430,7 @@ body.has-background .norm {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.family-builder button:hover {
+.dialog button:hover {
   background: linear-gradient(to bottom,
     var(--active-color),
     rgba(255, 255, 255, 0.8)
@@ -439,7 +439,7 @@ body.has-background .norm {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.family-builder button:active {
+.dialog button:active {
   transform: translateY(1px);
   box-shadow: none;
 }
@@ -459,7 +459,7 @@ body.has-background .norm {
   );
 }
 
-.family-builder .url-output {
+.dialog .url-output {
   margin-top: 1.5rem;
   padding: 1rem;
   background: rgba(128, 128, 128, 0.15);
@@ -467,13 +467,13 @@ body.has-background .norm {
   border: 1px solid rgba(128, 128, 128, 0.2);
 }
 
-.family-builder .url-output label {
+.dialog .url-output label {
   display: block;
   margin-bottom: 0.5rem;
   color: var(--active-color);
 }
 
-.family-builder .url-output input {
+.dialog .url-output input {
   width: 100%;
   padding: 0.75rem;
   background: rgba(0, 0, 0, 0.2);
@@ -482,14 +482,14 @@ body.has-background .norm {
   cursor: pointer;
 }
 
-.family-builder .url-output .copy-hint {
+.dialog .url-output .copy-hint {
   color: var(--special-color);
   font-size: 0.8em;
   margin-top: 0.5rem;
   text-align: right;
 }
 
-.family-builder .error {
+.dialog .error {
   color: #ff4444;
   margin-top: 0.5rem;
   font-size: 0.9em;
@@ -499,7 +499,7 @@ body.has-background .norm {
   text-shadow: none;
 }
 
-.modal-overlay {
+.dialog-overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -511,11 +511,11 @@ body.has-background .norm {
   backdrop-filter: blur(2px);
 }
 
-.modal-overlay.visible {
+.dialog-overlay.visible {
   display: block;
 }
 
-.family-builder select {
+.dialog select {
   appearance: none;
   cursor: pointer;
   font-family: inherit;
