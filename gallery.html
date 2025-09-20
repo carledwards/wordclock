@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Word Clock — Theme Gallery</title>
+    <style>
+      :root { color-scheme: light dark; --tile-aspect: 16 / 9; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.4;
+        padding: 16px;
+        background: #0b0b0b;
+        color: #eaeaea;
+      }
+      h1 { font-size: 1.25rem; margin: 0; font-weight: 600; }
+      .header {
+        display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        margin-bottom: 8px;
+      }
+      .subtle { color: #aaa; font-size: 0.9rem; margin-bottom: 16px; }
+      .title {
+        align-self: center;
+        color: #e6e6e6;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 999px;
+        padding: 6px 10px;
+        margin: 8px 0 0;
+        opacity: 0.95;
+      }
+      .section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: min(100%, 1100px);
+        margin: 48px auto 0;
+        padding: 16px 16px 20px;
+        border-radius: 14px;
+        border: 1px solid #262626;
+        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+        box-shadow:
+          0 10px 28px rgba(0,0,0,0.40),
+          inset 0 1px 0 rgba(255,255,255,0.06);
+        transition: box-shadow 160ms ease, transform 160ms ease;
+      }
+      .section:hover {
+        box-shadow:
+          0 14px 36px rgba(0,0,0,0.45),
+          inset 0 1px 0 rgba(255,255,255,0.07);
+        transform: translateY(-1px);
+      }
+      .section + .section {
+        margin-top: 64px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        justify-items: center;
+      }
+      .card {
+        position: relative; border-radius: 8px; overflow: hidden; background: #161616; border: 1px solid #232323;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        aspect-ratio: var(--tile-aspect);
+      }
+      .card iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+        background: #000;
+      }
+      .badge {
+        position: absolute; left: 8px; bottom: 8px;
+        background: rgba(0,0,0,0.66); color: #fff; padding: 4px 8px; border-radius: 999px;
+        font-size: 12px; letter-spacing: .3px; border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(2px);
+        pointer-events: none;
+      }
+      .link {
+        color: #9cdcff; text-decoration: none; font-size: 0.9rem;
+      }
+      .link:hover { text-decoration: underline; }
+      .noscript {
+        background: #221; border: 1px solid #533; padding: 12px; border-radius: 8px; margin-top: 12px;
+      }
+    </style>
+    <script src="themes/theme.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Theme Gallery</h1>
+      <a id="openSingle" class="link" href="./">Open single view</a>
+    </div>
+    <div class="subtle">Tiles mirror your current URL parameters (family, title, background, date) and force controls=false. Each tile loads index.html with its theme.</div>
+    <div id="grid" class="grid"></div>
+    <div class="noscript"><noscript>This page requires JavaScript to build the gallery.</noscript></div>
+    <script>
+      (function() {
+        const grid = document.getElementById('grid');
+        const current = new URL(window.location.href);
+        const base = new URL('index.html', window.location.href);
+
+        // Optional: support ?ratio=16:9 or ?ratio=4:3 to override tile aspect
+        const ratio = current.searchParams.get('ratio');
+        if (ratio) {
+          const match = ratio.match(/^(\d+)\s*[:/]\s*(\d+)$/);
+          if (match) {
+            const a = parseInt(match[1], 10), b = parseInt(match[2], 10);
+            if (a > 0 && b > 0) {
+              document.documentElement.style.setProperty('--tile-aspect', a + ' / ' + b);
+            }
+          }
+        }
+
+        // Preserve current params but remove preset theme; force controls=false
+        const preserved = new URLSearchParams(current.search);
+        preserved.delete('theme');
+        preserved.set('controls', 'false');
+
+        // Update the "Open single view" link to preserve current params
+        const openSingle = document.getElementById('openSingle');
+        const singleUrl = new URL('./', window.location.href);
+        singleUrl.search = preserved.toString();
+        openSingle.href = singleUrl.toString();
+
+        // Get theme names from ThemeManager; fallback if unavailable
+        const names = (window.themeManager && window.themeManager.getThemeNames())
+          || ['default','terminal','live-terminal','dos','mac1984'];
+
+        names.forEach(name => {
+          const section = document.createElement('div');
+          section.className = 'section';
+          section.id = name;
+
+          const title = document.createElement('div');
+          title.className = 'title';
+          title.textContent = name;
+          section.appendChild(title);
+
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const url = new URL(base);
+          url.search = preserved.toString();
+          url.searchParams.set('theme', name);
+
+          // Make section title clickable to open theme in a new tab
+          title.addEventListener('click', () => {
+            const win = window.open(url.toString(), '_blank');
+            if (win) { win.opener = null; }
+          });
+
+          const iframe = document.createElement('iframe');
+          iframe.loading = 'lazy';
+          iframe.referrerPolicy = 'no-referrer';
+          iframe.src = url.toString();
+
+          card.appendChild(iframe);
+          section.appendChild(card);
+          grid.appendChild(section);
+        });
+      })();
+    </script>
+  </body>
+</html>

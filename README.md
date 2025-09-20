@@ -3,7 +3,14 @@
 A unique digital clock that displays time using illuminated words instead of traditional numbers. This implementation adds an interesting twist by incorporating special date recognition, transforming the display for holidays and special occasions.
 
 ## Live Demo
-[View the Word Clock](https://carledwards.github.io/wordclock/)
+Theme Gallery (see all themes): https://carledwards.github.io/wordclock/gallery.html
+
+Individual themes:
+- Default: https://carledwards.github.io/wordclock/?theme=default
+- Terminal: https://carledwards.github.io/wordclock/?theme=terminal
+- Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
+- DOS: https://carledwards.github.io/wordclock/?theme=dos
+- Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
 
 ## Concept
 The word clock presents time in a natural language format, illuminating specific words to form readable phrases like "IT'S HALF PAST TWO" or "IT'S QUARTER TO FIVE". This creates an engaging and artistic way to display time, blending functionality with visual appeal.
@@ -18,7 +25,16 @@ The word clock presents time in a natural language format, illuminating specific
 ## Live Demos
 
 ### Regular Time Display
-[View the Word Clock](https://carledwards.github.io/wordclock/) - Shows the current time in natural language
+Shows the current time in natural language:
+
+Theme Gallery (see all themes): https://carledwards.github.io/wordclock/gallery.html
+
+Individual themes:
+- Default: https://carledwards.github.io/wordclock/?theme=default
+- Terminal: https://carledwards.github.io/wordclock/?theme=terminal
+- Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
+- DOS: https://carledwards.github.io/wordclock/?theme=dos
+- Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
 
 ### Special Occasion Demos
 Experience how the display transforms for special occasions:
