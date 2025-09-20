@@ -19,7 +19,7 @@
 body.liquid-glass {
   background:
     linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.35)),
-    url('https://512pixels.net/wp-content/uploads/2025/06/26-Tahoe-Light-6K-thumb.jpeg') center / cover no-repeat !important;
+    url('26-Tahoe-Light-6K-thumb.jpeg') center / cover no-repeat !important;
   background-attachment: scroll;
   background-color: #0a0b0d;
 }
