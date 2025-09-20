@@ -1,0 +1,180 @@
+/* Liquid Glass (iOS-like) Theme */
+.liquid-glass {
+  --bg-color: transparent;
+  --border-color: transparent;
+  --active-color: #ffffff;
+  --inactive-color: #8a8a8a;
+  --special-color: #7fe1ff;
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --border-radius: 18px;
+  --box-shadow: none;
+  /* iOS vibrant accent variables */
+  --lg-accent-start: #0a84ff;
+  --lg-accent-end: #30d5ff;
+  --lg-secondary-start: #00c7ff;
+  --lg-secondary-end: #1ee8b7;
+}
+
+/* Backdrop-like subtle gradient */
+body.liquid-glass {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.35)),
+    url('https://512pixels.net/wp-content/uploads/2025/06/26-Tahoe-Light-6K-thumb.jpeg') center / cover no-repeat !important;
+  background-attachment: scroll;
+  background-color: #0a0b0d;
+}
+
+/* Clock container styling */
+.liquid-glass .clock {
+  /* Lose the container look: let the whole page carry the iOS-style background */
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.liquid-glass .clock::before,
+.liquid-glass .clock::after {
+  /* Remove built-in overlays so only the pills (active words) are styled */
+  content: none !important;
+  background: none !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Better readability defaults */
+.liquid-glass .norm {
+  color: rgba(220, 220, 220, 0.28);
+  text-shadow: 0 0 0 rgba(0,0,0,0);
+}
+
+/* Open up row/column spacing for this theme */
+.liquid-glass .clock ul {
+  margin: 0.90rem 0;            /* more vertical breathing room between rows */
+  line-height: 1.60;            /* taller line box for better pill separation */
+  padding-inline-start: 0.9em;  /* slightly wider left/right gutters */
+  padding-inline-end: 0.9em;
+  word-spacing: 0.60em;         /* more horizontal space between non-highlighted words */
+}
+
+/* Ensure LI can host pseudo elements */
+.liquid-glass .clock ul li {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 1;
+  --lg-pill-y: 0;
+}
+
+/* Liquid glass bubble over highlighted items (hl = time words, ho = occasions) */
+.liquid-glass .clock ul li.hl,
+.liquid-glass .clock ul li.ho {
+  color: #ffffff;
+  -webkit-text-stroke: 0.02em rgba(255,255,255,0.28);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.22),
+    0 6px 12px rgba(0,0,0,0.30);
+  padding: 0.10em 0.60em; /* ensure pill wraps text evenly */
+  margin: 0.15em 0.45em; /* add vertical + horizontal breathing room between adjacent capsules */
+  --lg-pill-y: 0.04em; /* nudge pill vertically for visual centering */
+}
+
+/* Main glass pill */
+.liquid-glass .clock ul li.hl::before,
+.liquid-glass .clock ul li.ho::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -0.15em -0.60em;
+  transform: translateY(var(--lg-pill-y, 0));
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(140% 220% at 20% 28%, rgba(255,255,255,0.60), rgba(255,255,255,0.16) 40%, rgba(255,255,255,0.0) 65%),
+    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06));
+  border: 1px solid rgba(255,255,255,0.38);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.18),
+    inset 0 8px 18px rgba(255,255,255,0.10),
+    inset 0 -8px 18px rgba(0,0,0,0.18),
+    0 8px 24px rgba(10,132,255,0.26);
+  backdrop-filter: blur(14px) saturate(180%) brightness(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(180%) brightness(1.15);
+}
+
+/* Small glossy highlight strip */
+.liquid-glass .clock ul li.hl::after {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: -0.25em -0.90em; /* reduce vertical glow to avoid top/bottom touching */
+  transform: translateY(var(--lg-pill-y, 0));
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(60% 100% at 50% 50%, rgba(255,255,255,0.24), rgba(255,255,255,0.0) 70%);
+  filter: blur(12px);
+  opacity: 0.22;
+}
+.liquid-glass .clock ul li.ho::after {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: -0.25em -0.90em; /* reduce vertical glow to avoid top/bottom touching */
+  transform: translateY(var(--lg-pill-y, 0));
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(60% 100% at 50% 50%, rgba(10,132,255,0.22), rgba(10,132,255,0.0) 70%);
+  filter: blur(12px);
+  opacity: 0.24;
+}
+
+/* Special style for ho (occasion) items — white pill with tinted text */
+.liquid-glass .clock ul li.ho {
+  color: var(--lg-accent-start);
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.25),
+    0 4px 10px rgba(0,0,0,0.18);
+}
+
+.liquid-glass .clock ul li.ho::before {
+  background:
+    radial-gradient(120% 200% at 18% 28%, rgba(255,255,255,0.85), rgba(255,255,255,0.40) 45%, rgba(255,255,255,0.0) 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.82));
+  border: 1px solid rgba(255,255,255,0.90);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.55),
+    inset 0 -6px 14px rgba(0,0,0,0.08),
+    0 6px 20px rgba(0,0,0,0.18);
+}
+
+/* Optional subtle animated shimmer on active items */
+@keyframes lg-shimmer {
+  0% { transform: translateY(-50%) translateX(-1%); }
+  50% { transform: translateY(-50%) translateX(1%); }
+  100% { transform: translateY(-50%) translateX(-1%); }
+}
+.liquid-glass .clock ul li.hl::before,
+.liquid-glass .clock ul li.ho::before {
+  animation: none;
+}
+
+/* Time controls in this theme (consistency) */
+.liquid-glass .time-controls {
+  background: rgba(20,22,26,0.7);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+
+.liquid-glass .time-controls input,
+.liquid-glass .time-controls button {
+  background: rgba(255,255,255,0.06);
+  color: #e8f6ff;
+  border: 1px solid rgba(255,255,255,0.16);
+}

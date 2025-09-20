@@ -4,6 +4,7 @@
 @import url('themes/live-terminal.css');
 @import url('themes/dos.css');
 @import url('themes/mac1984.css');
+@import url('themes/liquid-glass.css');
 
 /* Hide these elements for all other themes */
 .clock-title-bar,

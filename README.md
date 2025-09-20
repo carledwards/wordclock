@@ -11,6 +11,13 @@ Individual themes:
 - Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
 - DOS: https://carledwards.github.io/wordclock/?theme=dos
 - Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
+- Liquid Glass: https://carledwards.github.io/wordclock/?theme=liquid-glass
+- Default: https://carledwards.github.io/wordclock/?theme=default
+- Terminal: https://carledwards.github.io/wordclock/?theme=terminal
+- Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
+- DOS: https://carledwards.github.io/wordclock/?theme=dos
+- Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
+- Liquid Glass: https://carledwards.github.io/wordclock/?theme=liquid-glass
 
 ## Concept
 The word clock presents time in a natural language format, illuminating specific words to form readable phrases like "IT'S HALF PAST TWO" or "IT'S QUARTER TO FIVE". This creates an engaging and artistic way to display time, blending functionality with visual appeal.
@@ -67,9 +74,10 @@ The background image will be contained within the clock display, and the text wi
 Choose from several classic computer themes by adding the theme parameter:
 ```
 ?theme=terminal       # Green terminal display
-?theme=live-terminal # Animated terminal display
-?theme=dos           # Classic DOS window
-?theme=mac1984       # Classic Macintosh display
+?theme=live-terminal  # Animated terminal display
+?theme=dos            # Classic DOS window
+?theme=mac1984        # Classic Macintosh display
+?theme=liquid-glass   # iOS-style liquid glass (highlighted words get a glass pill)
 ```
 
 Available themes:
@@ -99,6 +107,12 @@ Available themes:
 - Original color scheme for special occasions
 - DOS window-style border with 3D effect
 - Monospace font for authentic DOS look
+
+#### Liquid Glass Theme
+- iOS-style “liquid glass” aesthetic
+- Subtle dynamic backdrop with depth and glow
+- Highlighted words are covered by a translucent glass “pill” with shimmer
+- Maintains readability with soft lighting and blur effects
 
 ### Family Parameter
 Configure family information for special dates (birthdays, anniversary):

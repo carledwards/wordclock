@@ -143,6 +143,13 @@ class DOSTheme extends Theme {
     }
 }
 
+/* Liquid Glass Theme */
+class LiquidGlassTheme extends Theme {
+    constructor() {
+        super('liquid-glass');
+    }
+}
+
 // Theme Manager
 class ThemeManager {
     constructor() {
@@ -151,7 +158,8 @@ class ThemeManager {
             'live-terminal': new LiveTerminalTheme(),
             'mac1984': new Mac1984Theme(),
             'terminal': new TerminalTheme(),
-            'dos': new DOSTheme()
+            'dos': new DOSTheme(),
+            'liquid-glass': new LiquidGlassTheme()
         };
         this.currentTheme = null;
     }

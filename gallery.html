@@ -17,10 +17,27 @@
       }
       h1 { font-size: 1.25rem; margin: 0; font-weight: 600; }
       .header {
-        display: flex; align-items: center; justify-content: space-between; gap: 8px;
-        margin-bottom: 8px;
+        position: sticky; top: 0; z-index: 30; background: #0b0b0b;
+        padding: 8px 0 0; border-bottom: 1px solid #141414;
       }
+      .header-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
       .subtle { color: #aaa; font-size: 0.9rem; margin-bottom: 16px; }
+      .controls {
+        padding: 8px 0 12px; border-bottom: 1px solid #141414; margin-bottom: 12px;
+        display: flex; align-items: center; gap: 12px; justify-content: flex-start;
+      }
+      .segmented {
+        display: inline-flex; align-items: stretch; overflow: hidden;
+        border: 1px solid #262626; border-radius: 999px;
+        background: rgba(255,255,255,0.05);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      }
+      .segmented .seg {
+        appearance: none; border: 0; margin: 0; background: transparent; color: #e0e0e0;
+        padding: 8px 12px; font-size: 0.9rem; cursor: pointer;
+      }
+      .segmented .seg + .seg { border-left: 1px solid #262626; }
+      .segmented .seg.active { background: rgba(255,255,255,0.12); color: #fff; }
       .title {
         align-self: center;
         color: #e6e6e6;
@@ -93,15 +110,24 @@
       .noscript {
         background: #221; border: 1px solid #533; padding: 12px; border-radius: 8px; margin-top: 12px;
       }
+      .card--lg { background: transparent; border: 0; box-shadow: none; }
     </style>
     <script src="themes/theme.js"></script>
   </head>
   <body>
     <div class="header">
-      <h1>Theme Gallery</h1>
-      <a id="openSingle" class="link" href="./">Open single view</a>
+      <div class="header-top">
+        <h1>Word Clock Theme Gallery</h1>
+      </div>
+      <div class="controls">
+        <div class="segmented" role="radiogroup" aria-label="Event selector">
+          <button type="button" class="seg active" data-mode="now" role="radio" aria-checked="true">Now</button>
+          <button type="button" class="seg" data-mode="anniversary" role="radio" aria-checked="false">Anniversary</button>
+          <button type="button" class="seg" data-mode="mothers" role="radio" aria-checked="false">Mother's Day</button>
+          <button type="button" class="seg" data-mode="christmas" role="radio" aria-checked="false">Christmas</button>
+        </div>
+      </div>
     </div>
-    <div class="subtle">Tiles mirror your current URL parameters (family, title, background, date) and force controls=false. Each tile loads index.html with its theme.</div>
     <div id="grid" class="grid"></div>
     <div class="noscript"><noscript>This page requires JavaScript to build the gallery.</noscript></div>
     <script>
@@ -109,6 +135,7 @@
         const grid = document.getElementById('grid');
         const current = new URL(window.location.href);
         const base = new URL('index.html', window.location.href);
+
 
         // Optional: support ?ratio=16:9 or ?ratio=4:3 to override tile aspect
         const ratio = current.searchParams.get('ratio');
@@ -126,12 +153,8 @@
         const preserved = new URLSearchParams(current.search);
         preserved.delete('theme');
         preserved.set('controls', 'false');
+        let currentSearch = preserved.toString();
 
-        // Update the "Open single view" link to preserve current params
-        const openSingle = document.getElementById('openSingle');
-        const singleUrl = new URL('./', window.location.href);
-        singleUrl.search = preserved.toString();
-        openSingle.href = singleUrl.toString();
 
         // Get theme names from ThemeManager; fallback if unavailable
         const names = (window.themeManager && window.themeManager.getThemeNames())
@@ -148,15 +171,18 @@
           section.appendChild(title);
 
           const card = document.createElement('div');
-          card.className = 'card';
+          card.className = (name === 'liquid-glass') ? 'card card--lg' : 'card';
 
           const url = new URL(base);
           url.search = preserved.toString();
           url.searchParams.set('theme', name);
 
-          // Make section title clickable to open theme in a new tab
+          // Make section title clickable to open theme in a new tab (respect current selected date/mode)
           title.addEventListener('click', () => {
-            const win = window.open(url.toString(), '_blank');
+            const link = new URL('index.html', window.location.href);
+            link.search = currentSearch;
+            link.searchParams.set('theme', name);
+            const win = window.open(link.toString(), '_blank');
             if (win) { win.opener = null; }
           });
 
@@ -169,6 +195,95 @@
           section.appendChild(card);
           grid.appendChild(section);
         });
+
+        // Date selection logic
+        function pad2(n){ return String(n).padStart(2,'0'); }
+        function toParamDate(d){ return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
+
+        function getFamilyFromParams() {
+          const fam = new URL(window.location.href).searchParams.get('family');
+          if (fam) {
+            try { return JSON.parse(decodeURIComponent(fam)); } catch(e) {}
+          }
+          // Fallback to defaults used by the default clock
+          return {
+            parents: {
+              mom: { birthday: '1999/05/05' },
+              dad: { birthday: '1999/06/10' },
+              anniversary: '1999/04/29'
+            }
+          };
+        }
+
+        function getMothersDay(year) {
+          const date = new Date(year, 4, 1); // May 1st
+          date.setDate(date.getDay() === 0 ? 8 : 15 - date.getDay()); // second Sunday
+          return date;
+        }
+
+        function dateForMode(mode) {
+          const yr = new Date().getFullYear();
+          if (mode === 'anniversary') {
+            const ann = getFamilyFromParams().parents.anniversary || '2000/01/01';
+            const parts = ann.split('/').map(Number);
+            return new Date(yr, (parts[1] || 1) - 1, parts[2] || 1);
+          }
+          if (mode === 'mothers') return getMothersDay(yr);
+          if (mode === 'christmas') return new Date(yr, 11, 25);
+          return null;
+        }
+
+        function applyMode(mode) {
+          // update active state
+          document.querySelectorAll('.segmented .seg').forEach(btn => {
+            const active = btn.dataset.mode === mode;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-checked', active ? 'true' : 'false');
+          });
+
+          // build base params
+          const baseParams = new URLSearchParams(window.location.search);
+          baseParams.delete('theme');
+          baseParams.set('controls', 'false');
+
+          if (mode === 'now') {
+            baseParams.delete('date');
+          } else {
+            const d = dateForMode(mode);
+            baseParams.set('date', toParamDate(d));
+          }
+          currentSearch = baseParams.toString();
+
+
+          // refresh all iframes
+          document.querySelectorAll('.section .card iframe').forEach(iframe => {
+            const themeName = iframe.closest('.section')?.id || 'default';
+            const url = new URL('index.html', window.location.href);
+            url.search = baseParams.toString();
+            url.searchParams.set('theme', themeName);
+            iframe.src = url.toString();
+          });
+        }
+
+        // wire up segmented controls
+        document.querySelectorAll('.segmented .seg').forEach(btn => {
+          btn.addEventListener('click', () => applyMode(btn.dataset.mode));
+        });
+
+        // initial state based on existing ?date param if present
+        (function initMode() {
+          const current = new URL(window.location.href).searchParams.get('date');
+          if (!current) return applyMode('now');
+          const thisYear = new Date().getFullYear();
+          const ann = toParamDate(dateForMode('anniversary'));
+          const mom = toParamDate(dateForMode('mothers'));
+          const xmas = toParamDate(dateForMode('christmas'));
+          if (current === ann) return applyMode('anniversary');
+          if (current === mom) return applyMode('mothers');
+          if (current === xmas) return applyMode('christmas');
+          applyMode('now');
+        })();
+
       })();
     </script>
   </body>
