@@ -159,6 +159,7 @@ class ThemeManager {
             'mac1984': new Mac1984Theme(),
             'terminal': new TerminalTheme(),
             'dos': new DOSTheme(),
+            '16-segment': new SixteenSegmentTheme(),
             'liquid-glass': new LiquidGlassTheme()
         };
         this.currentTheme = null;

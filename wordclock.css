@@ -5,6 +5,7 @@
 @import url('themes/dos.css');
 @import url('themes/mac1984.css');
 @import url('themes/liquid-glass.css');
+@import url('themes/16-segment.css');
 
 /* Hide these elements for all other themes */
 .clock-title-bar,
