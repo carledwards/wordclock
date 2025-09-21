@@ -2,198 +2,87 @@
 
 A unique digital clock that displays time using illuminated words instead of traditional numbers. This implementation adds an interesting twist by incorporating special date recognition, transforming the display for holidays and special occasions.
 
-## Live Demo
-Theme Gallery (see all themes): https://carledwards.github.io/wordclock/gallery.html
+## 🚀 Quick Start
 
-Individual themes:
-- Default: https://carledwards.github.io/wordclock/?theme=default
-- Terminal: https://carledwards.github.io/wordclock/?theme=terminal
-- Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
-- DOS: https://carledwards.github.io/wordclock/?theme=dos
-- Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
-- Liquid Glass: https://carledwards.github.io/wordclock/?theme=liquid-glass
-- Default: https://carledwards.github.io/wordclock/?theme=default
-- Terminal: https://carledwards.github.io/wordclock/?theme=terminal
-- Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
-- DOS: https://carledwards.github.io/wordclock/?theme=dos
-- Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
-- Liquid Glass: https://carledwards.github.io/wordclock/?theme=liquid-glass
+**Theme Gallery (see all themes):** https://carledwards.github.io/wordclock/gallery.html
 
-## Concept
-The word clock presents time in a natural language format, illuminating specific words to form readable phrases like "IT'S HALF PAST TWO" or "IT'S QUARTER TO FIVE". This creates an engaging and artistic way to display time, blending functionality with visual appeal.
+**Individual Themes:**
+- [Default](https://carledwards.github.io/wordclock/?theme=default) - Clean, minimal design
+- [Terminal](https://carledwards.github.io/wordclock/?theme=terminal) - Green terminal display with monospace grid
+- [Live Terminal](https://carledwards.github.io/wordclock/?theme=live-terminal) - Animated typing cursor effect
+- [DOS](https://carledwards.github.io/wordclock/?theme=dos) - Classic DOS window with monospace grid
+- [Mac 1984](https://carledwards.github.io/wordclock/?theme=mac1984) - Classic Macintosh window
+- [Liquid Glass](https://carledwards.github.io/wordclock/?theme=liquid-glass) - iOS-style glass effects
 
-## Features
-- Natural language time display
-- Smooth transitions between time phrases
-- Special date recognition with unique color highlighting
-- Screen-like display with subtle visual effects
-- Mobile-responsive design
+## ✨ Concept
 
-## Live Demos
+The word clock presents time in natural language format, illuminating specific words to form readable phrases like "IT'S HALF PAST TWO" or "IT'S QUARTER TO FIVE". This creates an engaging and artistic way to display time, blending functionality with visual appeal.
 
-### Regular Time Display
-Shows the current time in natural language:
+## 🎯 Features
 
-Theme Gallery (see all themes): https://carledwards.github.io/wordclock/gallery.html
+- **Natural Language Time Display** - Time shown as readable phrases
+- **Multiple Themes** - Terminal, DOS, Mac 1984, and more
+- **Special Date Recognition** - Holidays and birthdays with unique highlighting
+- **Monospace Grid System** - Perfect character alignment for terminal themes
+- **Interactive Elements** - Click words for special features
+- **Custom Backgrounds** - Add your own background images
+- **Mobile Responsive** - Works on all devices
 
-Individual themes:
-- Default: https://carledwards.github.io/wordclock/?theme=default
-- Terminal: https://carledwards.github.io/wordclock/?theme=terminal
-- Live Terminal: https://carledwards.github.io/wordclock/?theme=live-terminal
-- DOS: https://carledwards.github.io/wordclock/?theme=dos
-- Mac 1984: https://carledwards.github.io/wordclock/?theme=mac1984
+## 🎨 Theme Showcase
 
-### Special Occasion Demos
-Experience how the display transforms for special occasions:
+### Terminal Themes
+- **Terminal**: Classic green monospace text with perfect grid alignment
+- **Live Terminal**: Animated cursor that types out the time character by character
+- **DOS**: Blue background with white text in authentic DOS style
 
-- [Merry Christmas](https://carledwards.github.io/wordclock/?date=2024-12-25) - Watch the display illuminate "MERRY CHRISTMAS" in festive colors
-- [Happy Anniversary](https://carledwards.github.io/wordclock/?date=2024-04-29) - See the special anniversary celebration display
-- [Adventure Time Birthday](https://carledwards.github.io/wordclock/?date=2024-09-04&background=https://variety.com/wp-content/uploads/2024/06/TCDADTI_CA002.jpg?w=1000&h=667&crop=1) - See Alli's birthday with a custom background
+### Classic Themes  
+- **Mac 1984**: Classic Macintosh window with title bar and menu
+- **Liquid Glass**: iOS-style translucent glass effects
+- **Default**: Clean, minimal design
 
-## URL Parameters
+## 🎉 Special Occasions
 
-### Date Parameter
-Test any date by adding a date parameter:
+The clock automatically recognizes special dates and transforms the display:
+
+- **[Christmas Demo](https://carledwards.github.io/wordclock/?date=2024-12-25)** - "MERRY CHRISTMAS" in festive colors
+- **[New Year Demo](https://carledwards.github.io/wordclock/?date=2024-01-01)** - "HAPPY NEW YEAR" celebration
+- **[Anniversary Demo](https://carledwards.github.io/wordclock/?date=2024-04-29)** - Special anniversary display
+
+## ⚙️ URL Parameters
+
+### Basic Parameters
+- `?theme=terminal` - Choose a theme (default, terminal, live-terminal, dos, mac1984, liquid-glass)
+- `?date=2024-12-25` - Set a specific date (YYYY-MM-DD format)
+- `?title=My Clock` - Custom window title (works with mac1984 theme)
+- `?controls=true` - Add time controls for testing
+
+### Advanced Parameters
+- `?background=IMAGE_URL` - Add custom background image
+- `?family=ENCODED_JSON` - Configure family birthdays and anniversary
+
+### Example Combinations
 ```
-?date=YYYY-MM-DD
-```
-
-Examples:
-- New Year: `?date=2024-01-01`
-- Any special occasion: Replace YYYY-MM-DD with your desired date
-
-### Background Image Parameter
-Add a custom background image to the clock display:
-```
-?background=IMAGE_URL
-```
-
-The background image will be contained within the clock display, and the text will have enhanced visibility with shadows.
-
-### Theme Parameter
-Choose from several classic computer themes by adding the theme parameter:
-```
-?theme=terminal       # Green terminal display
-?theme=live-terminal  # Animated terminal display
-?theme=dos            # Classic DOS window
-?theme=mac1984        # Classic Macintosh display
-?theme=liquid-glass   # iOS-style liquid glass (highlighted words get a glass pill)
+?theme=live-terminal&controls=true
+?date=2024-12-25&theme=terminal
+?theme=mac1984&title=My Custom Clock
 ```
 
-Available themes:
+## 🛠️ Interactive Features
 
-#### Mac 1984 Theme
-- Classic Macintosh window with title bar and stripes
-- Black text on white background
-- Window-style close button
-- Classic Mac menu bar
-- Custom window title support
+- **Click "IT'S"** - Opens family configuration builder
+- **Click "HAPPY"** - Shows days until special events
+- **Click "O'CLOCK"** - Cycles through available themes
+- **Click family names** - Shows their birthday celebration
+- **Click special dates** - Temporarily shows that celebration
 
-#### Live Terminal Theme
-- Terminal-style display with animated cursor
-- Cursor draws text left-to-right, top-to-bottom
-- Full screen redraw on updates
-- Blinking cursor in bottom right when idle
-- Time controls available for testing
+## 🔧 Technical Highlights
 
-#### Terminal Theme
-- Classic green monospace text
-- Yellow highlights for special occasions
-- Terminal-style border with subtle glow
-- Black background with green accents
+- **Pure JavaScript** - No external dependencies
+- **Monospace Grid System** - Perfect character alignment across themes
+- **Smart Change Detection** - Only redraws when display actually changes
+- **Cache-Busting Gallery** - Always shows latest theme updates
+- **Responsive Design** - Works on desktop and mobile
 
-#### DOS Theme
-- Classic blue background with white text
-- Original color scheme for special occasions
-- DOS window-style border with 3D effect
-- Monospace font for authentic DOS look
+## 📝 License
 
-#### Liquid Glass Theme
-- iOS-style “liquid glass” aesthetic
-- Subtle dynamic backdrop with depth and glow
-- Highlighted words are covered by a translucent glass “pill” with shimmer
-- Maintains readability with soft lighting and blur effects
-
-### Family Parameter
-Configure family information for special dates (birthdays, anniversary):
-```
-?family=ENCODED_JSON
-```
-
-Example JSON structure before encoding:
-```json
-{
-  "parents": {
-    "mom": {
-      "name": "Jane",
-      "birthday": "1980/05/15"
-    },
-    "dad": {
-      "name": "John",
-      "birthday": "1978/08/22"
-    },
-    "anniversary": "2000/06/30"
-  },
-  "children": [
-    {
-      "name": "Alice",
-      "birthday": "2010/03/10"
-    },
-    {
-      "name": "Bob",
-      "birthday": "2012/11/25"
-    }
-  ]
-}
-```
-
-Example encoded URL parameter:
-```
-?family=%7B%22parents%22%3A%7B%22mom%22%3A%7B%22name%22%3A%22Jane%22%2C%22birthday%22%3A%221980%2F05%2F15%22%7D%2C%22dad%22%3A%7B%22name%22%3A%22John%22%2C%22birthday%22%3A%221978%2F08%2F22%22%7D%2C%22anniversary%22%3A%222000%2F06%2F30%22%7D%2C%22children%22%3A%5B%7B%22name%22%3A%22Alice%22%2C%22birthday%22%3A%222010%2F03%2F10%22%7D%2C%7B%22name%22%3A%22Bob%22%2C%22birthday%22%3A%222012%2F11%2F25%22%7D%5D%7D
-```
-
-Note: Use the URL builder (click "IT'S") to easily generate the encoded URL with your family configuration.
-
-### Title Parameter
-Customize the window title (works with mac1984 theme):
-```
-?title=Your Custom Title
-```
-The default title is "Word Clock" if not specified.
-
-### URL Builder
-Click on the word "IT'S" in the display to open the URL builder. This tool allows you to:
-- Select a theme
-- Set a custom title (for mac1984 theme)
-- Configure family information
-- Generate a shareable URL with your settings
-
-### Time Controls Parameter
-Add interactive time controls to test different times (works with any theme):
-```
-?controls=true
-```
-This adds a time input widget at the top of the display.
-
-### Combining Parameters
-You can combine multiple parameters to create unique displays:
-```
-?date=YYYY-MM-DD&theme=THEME&background=IMAGE_URL&controls=true
-```
-
-Examples:
-- Live Terminal with Controls: `?theme=live-terminal&controls=true`
-- Terminal Christmas: `?date=2024-12-25&theme=terminal`
-- DOS Christmas: `?date=2024-12-25&theme=dos`
-- Terminal New Year: `?date=2024-01-01&theme=terminal`
-- DOS New Year: `?date=2024-01-01&theme=dos`
-- Adventure Time Birthday: `?date=2024-09-04&background=https://variety.com/wp-content/uploads/2024/06/TCDADTI_CA002.jpg?w=1000&h=667&crop=1` - Shows Alli's birthday with an Adventure Time background
-
-## Technical Details
-- Pure JavaScript implementation
-- CSS-based styling and animations
-- No external dependencies
-- Configurable special dates system
-
-## License
 MIT License - Feel free to use and modify for your own projects.
