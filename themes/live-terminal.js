@@ -148,9 +148,9 @@
           char.classList.remove('cursor-char');
           char.textContent = originalChar;
           currentChar++;
-          const timeout2 = setTimeout(typeNext, 5); // Typing speed
+          const timeout2 = setTimeout(typeNext, 25); // Typing speed
           this._animationTimeouts.push(timeout2);
-        }, 10); // Cursor display time
+        }, 20); // Cursor display time
         this._animationTimeouts.push(timeout1);
       };
 
