@@ -162,71 +162,8 @@
     }
   }
 
-  function calculateFullJustification() {
-    // Get all rows and calculate their content
-    const rows = Array.from(document.querySelectorAll('.clock ul'));
-    let maxColumns = 0;
-    
-    // Calculate the longest row
-    rows.forEach(row => {
-      const words = Array.from(row.querySelectorAll('li')).map(li => li.dataset.plain || li.textContent.trim());
-      const totalChars = words.reduce((sum, word) => sum + word.length, 0);
-      const minSpaces = Math.max(0, words.length - 1); // At least one space between words
-      const rowLength = totalChars + minSpaces;
-      maxColumns = Math.max(maxColumns, rowLength);
-    });
-    
-    return maxColumns;
-  }
-
-  function renderRowWithJustification(row, maxColumns) {
-    const lis = Array.from(row.querySelectorAll('li'));
-    const wordData = lis.map(li => ({
-      text: li.dataset.plain || li.textContent.trim(),
-      className: li.className,
-      id: li.id // Preserve IDs for word clock functionality
-    }));
-    
-    // Calculate total character count and required spaces
-    const totalChars = wordData.reduce((sum, word) => sum + word.text.length, 0);
-    const minSpaces = Math.max(0, wordData.length - 1);
-    const extraSpaces = maxColumns - totalChars - minSpaces;
-    
-    // Distribute extra spaces between words
-    const spacesPerGap = wordData.length > 1 ? Math.floor(extraSpaces / (wordData.length - 1)) : 0;
-    const remainderSpaces = wordData.length > 1 ? extraSpaces % (wordData.length - 1) : extraSpaces;
-    
-    // Clear the row and rebuild with justified spacing
-    row.innerHTML = '';
-    
-    wordData.forEach((wordInfo, index) => {
-      // Create li for the word
-      const li = document.createElement('li');
-      li.className = wordInfo.className; // Preserve original classes
-      if (wordInfo.id) li.id = wordInfo.id; // Preserve original ID
-      li.dataset.plain = wordInfo.text;
-      
-      // Render the word as LED
-      renderLiToLED(li);
-      row.appendChild(li);
-      
-      // Add spaces after each word except the last
-      if (index < wordData.length - 1) {
-        const baseSpaces = 1 + spacesPerGap;
-        const extraSpace = index < remainderSpaces ? 1 : 0;
-        const totalSpaces = baseSpaces + extraSpace;
-        
-        // Create space characters
-        for (let i = 0; i < totalSpaces; i++) {
-          const spaceLi = document.createElement('li');
-          spaceLi.className = 'norm'; // Spaces are always normal
-          spaceLi.dataset.plain = ' ';
-          renderLiToLED(spaceLi);
-          row.appendChild(spaceLi);
-        }
-      }
-    });
-  }
+  // Use shared MonospaceGrid system for consistency
+  // No need for custom justification logic anymore
 
   class SixteenSegmentTheme extends Theme {
     constructor() {
@@ -235,15 +172,14 @@
     }
 
     init() {
-      // Calculate full justification
-      const maxColumns = calculateFullJustification();
-      
-      // Set CSS grid columns for all rows
-      const rows = document.querySelectorAll('.clock ul');
-      rows.forEach(row => {
-        row.style.gridTemplateColumns = `repeat(${maxColumns}, 1fr)`;
-        renderRowWithJustification(row, maxColumns);
-      });
+      // Use shared MonospaceGrid system with LED character renderer
+      if (window.MonospaceGrid) {
+        window.MonospaceGrid.applyMonospaceGrid('sixteen-segment', renderLiToLED);
+      } else {
+        // Fallback: just render characters without grid
+        const lis = document.querySelectorAll('.clock ul li');
+        lis.forEach(li => renderLiToLED(li));
+      }
       
       this._rendered = true;
 
@@ -264,8 +200,16 @@
 
     cleanup() {
       if (!this._rendered) return;
-      const lis = document.querySelectorAll('.clock ul li');
-      lis.forEach(restoreLiFromLED);
+      
+      // Use shared cleanup if available
+      if (window.MonospaceGrid) {
+        window.MonospaceGrid.cleanup();
+      } else {
+        // Fallback cleanup
+        const lis = document.querySelectorAll('.clock ul li');
+        lis.forEach(restoreLiFromLED);
+      }
+      
       this._rendered = false;
     }
   }

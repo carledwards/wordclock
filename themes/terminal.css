@@ -55,3 +55,21 @@
 .terminal .ho {
   text-shadow: none;
 }
+
+/* Apply monospace grid when terminal theme is active */
+body.terminal.monospace-grid .clock ul li {
+  display: contents;
+}
+
+/* Each character in terminal becomes a grid item */
+body.terminal.monospace-grid .clock li .mono-char {
+  font-family: var(--font-family);
+  font-weight: normal; /* Default to normal weight */
+  text-transform: uppercase;
+}
+
+/* Only active characters are bold */
+body.terminal.monospace-grid .clock li.hl .mono-char,
+body.terminal.monospace-grid .clock li.ho .mono-char {
+  font-weight: bold;
+}

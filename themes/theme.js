@@ -129,7 +129,7 @@ class Mac1984Theme extends Theme {
     }
 }
 
-// Terminal Theme
+// Terminal Theme - will be overridden by themes/terminal.js if loaded
 class TerminalTheme extends Theme {
     constructor() {
         super('terminal');
@@ -153,12 +153,13 @@ class LiquidGlassTheme extends Theme {
 // Theme Manager
 class ThemeManager {
     constructor() {
+        // Initialize themes - use enhanced versions if available
         this.themes = {
             'default': new Theme('default'),
-            'live-terminal': new LiveTerminalTheme(),
+            'live-terminal': new (window.LiveTerminalTheme || LiveTerminalTheme)(),
             'mac1984': new Mac1984Theme(),
-            'terminal': new TerminalTheme(),
-            'dos': new DOSTheme(),
+            'terminal': new (window.TerminalTheme || TerminalTheme)(),
+            'dos': new (window.DOSTheme || DOSTheme)(),
             '16-segment': new SixteenSegmentTheme(),
             'liquid-glass': new LiquidGlassTheme()
         };

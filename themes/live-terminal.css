@@ -7,12 +7,23 @@
   position: absolute;
   bottom: 0.4rem;
   right: 0.4rem;
-  width: 0.8em;
-  height: 1.2em;
+  width: 0.6ch; /* Smaller cursor for individual characters */
+  height: 1em;
   background-color: #00ff00;
   animation: blink 1s step-end infinite;
   opacity: 0.8;
   z-index: 2;
+}
+
+/* Cursor sizing for monospace grid - much smaller */
+body.live-terminal.monospace-grid .cursor {
+  width: 0.6ch;
+  height: 1em;
+}
+
+/* Cursor character styling - always bright green */
+.live-terminal .mono-char.cursor-char {
+  color: #00ff00 !important; /* Force bright green for cursor */
 }
 
 @keyframes blink {

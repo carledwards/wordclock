@@ -112,8 +112,17 @@
       }
       .card--lg { background: transparent; border: 0; box-shadow: none; }
     </style>
-    <script src="themes/16-segment.js"></script>
-    <script src="themes/theme.js"></script>
+    <script>
+      // Dynamic cache-busting timestamp
+      const cacheBreaker = Date.now();
+      document.write(`<script src="themes/monospace-grid.js?v=${cacheBreaker}"><\/script>`);
+      document.write(`<script src="themes/16-segment.js?v=${cacheBreaker}"><\/script>`);
+      document.write(`<script src="themes/terminal.js?v=${cacheBreaker}"><\/script>`);
+      document.write(`<script src="themes/live-terminal.js?v=${cacheBreaker}"><\/script>`);
+      document.write(`<script src="themes/dos.js?v=${cacheBreaker}"><\/script>`);
+      document.write(`<script src="themes/theme.js?v=${cacheBreaker}"><\/script>`);
+      document.write(`<script src="wordclock.js?v=${cacheBreaker}"><\/script>`);
+    </script>
   </head>
   <body>
     <div class="header">
@@ -177,6 +186,7 @@
           const url = new URL(base);
           url.search = preserved.toString();
           url.searchParams.set('theme', name);
+          url.searchParams.set('_t', Date.now()); // Cache busting for iframe
 
           // Make section title clickable to open theme in a new tab (respect current selected date/mode)
           title.addEventListener('click', () => {
@@ -256,12 +266,13 @@
           currentSearch = baseParams.toString();
 
 
-          // refresh all iframes
+          // refresh all iframes with cache busting
           document.querySelectorAll('.section .card iframe').forEach(iframe => {
             const themeName = iframe.closest('.section')?.id || 'default';
             const url = new URL('index.html', window.location.href);
             url.search = baseParams.toString();
             url.searchParams.set('theme', themeName);
+            url.searchParams.set('_t', Date.now()); // Cache busting for iframe refresh
             iframe.src = url.toString();
           });
         }
