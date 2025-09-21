@@ -23,43 +23,42 @@ body.sixteen-segment .clock {
   font-size: clamp(1rem, 1vw, 5rem);  
 }
 
-/* Container that will wrap the per-character SVGs for each word (li) */
-body.sixteen-segment .clock li .led16 {
+/* Monospaced container for 16-segment display */
+body.sixteen-segment .clock li .led16-mono {
   display: inline-flex;
   gap: var(--led-char-gap);
   align-items: center;
-  vertical-align: middle;
+  justify-content: center;
 }
 
-/* Each glyph (one character) is a responsive SVG that scales with font size */
-body.sixteen-segment .clock li .led16 svg.glyph {
+/* Each digit slot - fixed size for perfect monospacing */
+body.sixteen-segment .clock li .led16-mono .digit-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: var(--led-cell-w);
   height: var(--led-cell-h);
-  display: inline-block;
-  flex: 0 0 auto;
-  /* Prevent layout jitter */
+  flex: 0 0 auto; /* Fixed size, no grow/shrink */
+}
+
+/* SVG within each digit slot */
+body.sixteen-segment .clock li .led16-mono .digit-slot svg.glyph {
+  width: 100%;
+  height: 100%;
   shape-rendering: geometricPrecision;
-}
-
-/* Spacer for spaces between words */
-body.sixteen-segment .clock li .led16 .spacer {
-  width: var(--led-cell-w);
-  height: var(--led-cell-h);
-  display: inline-block;
-  flex: 0 0 auto;
 }
 
 /* LED Color Scheme */
 /* Inactive/dim text */
-body.sixteen-segment .clock li.norm .led16 svg polygon,
-body.sixteen-segment .clock li.norm .led16 svg circle {
+body.sixteen-segment .clock li.norm .led16-mono svg polygon,
+body.sixteen-segment .clock li.norm .led16-mono svg circle {
   fill: var(--led-dim);
   transition: opacity 120ms ease;
 }
 
 /* Active time elements - RED LED */
-body.sixteen-segment .clock li.hl .led16 svg polygon,
-body.sixteen-segment .clock li.hl .led16 svg circle {
+body.sixteen-segment .clock li.hl .led16-mono svg polygon,
+body.sixteen-segment .clock li.hl .led16-mono svg circle {
   fill: var(--led-red);
   transition: opacity 120ms ease;
   filter: drop-shadow(0 0 8px rgba(255, 42, 42, 1.0))
@@ -69,8 +68,8 @@ body.sixteen-segment .clock li.hl .led16 svg circle {
 }
 
 /* Special occasions - GREEN LED */
-body.sixteen-segment .clock li.ho .led16 svg polygon,
-body.sixteen-segment .clock li.ho .led16 svg circle {
+body.sixteen-segment .clock li.ho .led16-mono svg polygon,
+body.sixteen-segment .clock li.ho .led16-mono svg circle {
   fill: var(--led-green);
   transition: opacity 120ms ease;
   filter: drop-shadow(0 0 4px rgba(0, 255, 65, var(--led-glow-strength)))
@@ -78,14 +77,14 @@ body.sixteen-segment .clock li.ho .led16 svg circle {
 }
 
 /* When a background image is present, enhance contrast */
-body.has-background.sixteen-segment .clock li.norm .led16 svg polygon,
-body.has-background.sixteen-segment .clock li.norm .led16 svg circle {
+body.has-background.sixteen-segment .clock li.norm .led16-mono svg polygon,
+body.has-background.sixteen-segment .clock li.norm .led16-mono svg circle {
   fill: var(--led-dim);
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
 }
 
-body.has-background.sixteen-segment .clock li.hl .led16 svg polygon,
-body.has-background.sixteen-segment .clock li.hl .led16 svg circle {
+body.has-background.sixteen-segment .clock li.hl .led16-mono svg polygon,
+body.has-background.sixteen-segment .clock li.hl .led16-mono svg circle {
   fill: var(--led-red);
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
           drop-shadow(0 0 8px rgba(255, 42, 42, 1.0))
@@ -93,19 +92,43 @@ body.has-background.sixteen-segment .clock li.hl .led16 svg circle {
           drop-shadow(0 0 24px rgba(255, 42, 42, 0.5));
 }
 
-body.has-background.sixteen-segment .clock li.ho .led16 svg polygon,
-body.has-background.sixteen-segment .clock li.ho .led16 svg circle {
+body.has-background.sixteen-segment .clock li.ho .led16-mono svg polygon,
+body.has-background.sixteen-segment .clock li.ho .led16-mono svg circle {
   fill: var(--led-green);
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
           drop-shadow(0 0 6px rgba(0, 255, 65, var(--led-glow-strength)))
           drop-shadow(0 0 12px rgba(0, 255, 65, 0.3));
 }
 
-/* Ensure layout from existing CSS remains consistent */
+/* Make each row a grid container with explicit columns for full justification */
 body.sixteen-segment .clock ul {
-  letter-spacing: 0; /* spacing is handled inside the glyph stream */
-  word-spacing: 0.35em; /* keep original word separation */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--led-cell-w), 1fr));
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--led-char-gap);
+  letter-spacing: 0;
   line-height: 1.3;
+  width: 100%;
+}
+
+/* Each word (li) positions itself within the grid */
+body.sixteen-segment .clock ul li {
+  display: contents; /* Make the li transparent to the grid */
+}
+
+/* The LED characters become direct grid children for perfect alignment */
+body.sixteen-segment .clock li .led16-mono {
+  display: contents; /* Make this transparent too */
+}
+
+/* Each digit slot becomes a grid item */
+body.sixteen-segment .clock li .led16-mono .digit-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--led-cell-w);
+  height: var(--led-cell-h);
 }
 
 /* Fallback visibility: If, for any reason, the theme fails to initialize,

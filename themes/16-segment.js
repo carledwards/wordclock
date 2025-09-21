@@ -129,29 +129,27 @@
     // Clear and render
     while (li.firstChild) li.removeChild(li.firstChild);
 
-    const wrap = document.createElement('span');
-    wrap.className = 'led16';
+    const wrap = document.createElement('div');
+    wrap.className = 'led16-mono';
 
-    // Render each character
+    // Create a digit slot for every character (including spaces)
     const chars = (text || '').split('');
-    for (const ch of chars) {
-      if (ch === ' ') {
-        // Add a spacer (empty div) to maintain spacing
-        const spacer = document.createElement('div');
-        spacer.className = 'glyph spacer';
-        wrap.appendChild(spacer);
-      } else {
-        // Create SVG element from template
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = SVG_TEMPLATE;
-        const svg = tempDiv.firstElementChild;
-        
-        // Create display controller and show character
-        const display = createSegmentDisplay(svg);
-        display.show(ch);
-        
-        wrap.appendChild(svg);
-      }
+    for (let i = 0; i < chars.length; i++) {
+      const ch = chars[i];
+      const digitSlot = document.createElement('div');
+      digitSlot.className = 'digit-slot';
+      
+      // Always create an SVG, even for spaces
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = SVG_TEMPLATE;
+      const svg = tempDiv.firstElementChild;
+      
+      // Create display controller and show character (spaces will show nothing)
+      const display = createSegmentDisplay(svg);
+      display.show(ch);
+      
+      digitSlot.appendChild(svg);
+      wrap.appendChild(digitSlot);
     }
 
     li.appendChild(wrap);
@@ -164,6 +162,72 @@
     }
   }
 
+  function calculateFullJustification() {
+    // Get all rows and calculate their content
+    const rows = Array.from(document.querySelectorAll('.clock ul'));
+    let maxColumns = 0;
+    
+    // Calculate the longest row
+    rows.forEach(row => {
+      const words = Array.from(row.querySelectorAll('li')).map(li => li.dataset.plain || li.textContent.trim());
+      const totalChars = words.reduce((sum, word) => sum + word.length, 0);
+      const minSpaces = Math.max(0, words.length - 1); // At least one space between words
+      const rowLength = totalChars + minSpaces;
+      maxColumns = Math.max(maxColumns, rowLength);
+    });
+    
+    return maxColumns;
+  }
+
+  function renderRowWithJustification(row, maxColumns) {
+    const lis = Array.from(row.querySelectorAll('li'));
+    const wordData = lis.map(li => ({
+      text: li.dataset.plain || li.textContent.trim(),
+      className: li.className,
+      id: li.id // Preserve IDs for word clock functionality
+    }));
+    
+    // Calculate total character count and required spaces
+    const totalChars = wordData.reduce((sum, word) => sum + word.text.length, 0);
+    const minSpaces = Math.max(0, wordData.length - 1);
+    const extraSpaces = maxColumns - totalChars - minSpaces;
+    
+    // Distribute extra spaces between words
+    const spacesPerGap = wordData.length > 1 ? Math.floor(extraSpaces / (wordData.length - 1)) : 0;
+    const remainderSpaces = wordData.length > 1 ? extraSpaces % (wordData.length - 1) : extraSpaces;
+    
+    // Clear the row and rebuild with justified spacing
+    row.innerHTML = '';
+    
+    wordData.forEach((wordInfo, index) => {
+      // Create li for the word
+      const li = document.createElement('li');
+      li.className = wordInfo.className; // Preserve original classes
+      if (wordInfo.id) li.id = wordInfo.id; // Preserve original ID
+      li.dataset.plain = wordInfo.text;
+      
+      // Render the word as LED
+      renderLiToLED(li);
+      row.appendChild(li);
+      
+      // Add spaces after each word except the last
+      if (index < wordData.length - 1) {
+        const baseSpaces = 1 + spacesPerGap;
+        const extraSpace = index < remainderSpaces ? 1 : 0;
+        const totalSpaces = baseSpaces + extraSpace;
+        
+        // Create space characters
+        for (let i = 0; i < totalSpaces; i++) {
+          const spaceLi = document.createElement('li');
+          spaceLi.className = 'norm'; // Spaces are always normal
+          spaceLi.dataset.plain = ' ';
+          renderLiToLED(spaceLi);
+          row.appendChild(spaceLi);
+        }
+      }
+    });
+  }
+
   class SixteenSegmentTheme extends Theme {
     constructor() {
       super('sixteen-segment');
@@ -171,9 +235,16 @@
     }
 
     init() {
-      // Render all li nodes in the clock into LED glyphs
-      const lis = document.querySelectorAll('.clock ul li');
-      lis.forEach(li => renderLiToLED(li));
+      // Calculate full justification
+      const maxColumns = calculateFullJustification();
+      
+      // Set CSS grid columns for all rows
+      const rows = document.querySelectorAll('.clock ul');
+      rows.forEach(row => {
+        row.style.gridTemplateColumns = `repeat(${maxColumns}, 1fr)`;
+        renderRowWithJustification(row, maxColumns);
+      });
+      
       this._rendered = true;
 
       // Ensure title bar compatibility if present
