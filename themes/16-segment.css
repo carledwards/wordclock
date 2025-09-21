@@ -1,109 +1,28 @@
 /* 16 Segment LED Theme */
-/* Scoped to body.16-segment which is the class added by the theme manager */
+/* Scoped to body.sixteen-segment which is the class added by the theme manager */
 body.sixteen-segment {
   /* LED color scheme - authentic LED colors */
   --led-red: #ff2a2a;        /* Bright red for clock/time */
   --led-green: #00ff41;      /* Bright green for special occasions */
   --led-dim: #2a2a2a;        /* Dim color for inactive text */
   
-  /* Uses project-wide variables already defined by other themes for colors */
+  /* LED sizing and spacing */
   --font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  --led-base-size: clamp(8px, 1.4em, 28px); /* Scale between 8px and 28px - smaller minimum for tight spaces */
+  --led-base-size: clamp(8px, 1.4em, 28px);
   --led-cell-w: var(--led-base-size);
-  --led-cell-h: calc(var(--led-base-size) * 1.35); /* Maintain SVG aspect ratio 330:444 ≈ 1:1.35 */
-  --led-char-gap: clamp(0.5px, 0.15em, 3px); /* Smaller gaps for tight spaces */
-  --led-glow-strength: 1.0;
+  --led-cell-h: calc(var(--led-base-size) * 1.35); /* Maintain SVG aspect ratio 1:1.35 */
+  --led-char-gap: clamp(0.5px, 0.15em, 3px);
 }
 
-/* The overall clock container styles still come from existing CSS and theme variables.
-   We ensure the mono appearance and spacing by rendering characters as fixed-size SVGs. */
+/* Clock container with monospace font */
 body.sixteen-segment .clock {
   font-family: var(--font-family);
-  /* Override the complex global font-size with simpler scaling for SVG compatibility */
-  font-size: clamp(1rem, 1vw, 5rem);  
+  font-size: clamp(1rem, 1vw, 5rem);
 }
 
-/* Monospaced container for 16-segment display */
-body.sixteen-segment .clock li .led16-mono {
-  display: inline-flex;
-  gap: var(--led-char-gap);
-  align-items: center;
-  justify-content: center;
-}
-
-/* Each digit slot - fixed size for perfect monospacing */
-body.sixteen-segment .clock li .led16-mono .digit-slot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: var(--led-cell-w);
-  height: var(--led-cell-h);
-  flex: 0 0 auto; /* Fixed size, no grow/shrink */
-}
-
-/* SVG within each digit slot */
-body.sixteen-segment .clock li .led16-mono .digit-slot svg.glyph {
-  width: 100%;
-  height: 100%;
-  shape-rendering: geometricPrecision;
-}
-
-/* LED Color Scheme */
-/* Inactive/dim text */
-body.sixteen-segment .clock li.norm .led16-mono svg polygon,
-body.sixteen-segment .clock li.norm .led16-mono svg circle {
-  fill: var(--led-dim);
-  transition: opacity 120ms ease;
-}
-
-/* Active time elements - RED LED */
-body.sixteen-segment .clock li.hl .led16-mono svg polygon,
-body.sixteen-segment .clock li.hl .led16-mono svg circle {
-  fill: var(--led-red);
-  transition: opacity 120ms ease;
-  filter: drop-shadow(0 0 8px rgba(255, 42, 42, 1.0))
-          drop-shadow(0 0 16px rgba(255, 42, 42, 0.9))
-          drop-shadow(0 0 24px rgba(255, 42, 42, 0.7))
-          drop-shadow(0 0 32px rgba(255, 42, 42, 0.4));
-}
-
-/* Special occasions - GREEN LED */
-body.sixteen-segment .clock li.ho .led16-mono svg polygon,
-body.sixteen-segment .clock li.ho .led16-mono svg circle {
-  fill: var(--led-green);
-  transition: opacity 120ms ease;
-  filter: drop-shadow(0 0 4px rgba(0, 255, 65, var(--led-glow-strength)))
-          drop-shadow(0 0 8px rgba(0, 255, 65, 0.4));
-}
-
-/* When a background image is present, enhance contrast */
-body.has-background.sixteen-segment .clock li.norm .led16-mono svg polygon,
-body.has-background.sixteen-segment .clock li.norm .led16-mono svg circle {
-  fill: var(--led-dim);
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
-}
-
-body.has-background.sixteen-segment .clock li.hl .led16-mono svg polygon,
-body.has-background.sixteen-segment .clock li.hl .led16-mono svg circle {
-  fill: var(--led-red);
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
-          drop-shadow(0 0 8px rgba(255, 42, 42, 1.0))
-          drop-shadow(0 0 16px rgba(255, 42, 42, 0.8))
-          drop-shadow(0 0 24px rgba(255, 42, 42, 0.5));
-}
-
-body.has-background.sixteen-segment .clock li.ho .led16-mono svg polygon,
-body.has-background.sixteen-segment .clock li.ho .led16-mono svg circle {
-  fill: var(--led-green);
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
-          drop-shadow(0 0 6px rgba(0, 255, 65, var(--led-glow-strength)))
-          drop-shadow(0 0 12px rgba(0, 255, 65, 0.3));
-}
-
-/* Make each row a grid container with explicit columns for full justification */
+/* Grid layout for full justification - set by JavaScript */
 body.sixteen-segment .clock ul {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--led-cell-w), 1fr));
   justify-content: space-between;
   align-items: center;
   gap: var(--led-char-gap);
@@ -112,14 +31,14 @@ body.sixteen-segment .clock ul {
   width: 100%;
 }
 
-/* Each word (li) positions itself within the grid */
+/* Make li elements transparent to the grid */
 body.sixteen-segment .clock ul li {
-  display: contents; /* Make the li transparent to the grid */
+  display: contents;
 }
 
-/* The LED characters become direct grid children for perfect alignment */
+/* Make LED containers transparent to the grid */
 body.sixteen-segment .clock li .led16-mono {
-  display: contents; /* Make this transparent too */
+  display: contents;
 }
 
 /* Each digit slot becomes a grid item */
@@ -131,5 +50,61 @@ body.sixteen-segment .clock li .led16-mono .digit-slot {
   height: var(--led-cell-h);
 }
 
-/* Fallback visibility: If, for any reason, the theme fails to initialize,
-   the original text content will remain. No extra styles needed here. */
+/* SVG styling */
+body.sixteen-segment .clock li .led16-mono .digit-slot svg.glyph {
+  width: 100%;
+  height: 100%;
+  shape-rendering: geometricPrecision;
+}
+
+/* LED Color Scheme */
+/* Base styles for all LED segments */
+body.sixteen-segment .clock li .led16-mono svg polygon,
+body.sixteen-segment .clock li .led16-mono svg circle {
+  transition: opacity 120ms ease;
+}
+
+/* Inactive/dim text */
+body.sixteen-segment .clock li.norm .led16-mono svg polygon,
+body.sixteen-segment .clock li.norm .led16-mono svg circle {
+  fill: var(--led-dim);
+}
+
+/* Active time elements - RED LED with intense glow */
+body.sixteen-segment .clock li.hl .led16-mono svg polygon,
+body.sixteen-segment .clock li.hl .led16-mono svg circle {
+  fill: var(--led-red);
+  filter: drop-shadow(0 0 8px rgba(255, 42, 42, 1.0))
+          drop-shadow(0 0 16px rgba(255, 42, 42, 0.9))
+          drop-shadow(0 0 24px rgba(255, 42, 42, 0.7))
+          drop-shadow(0 0 32px rgba(255, 42, 42, 0.4));
+}
+
+/* Special occasions - GREEN LED */
+body.sixteen-segment .clock li.ho .led16-mono svg polygon,
+body.sixteen-segment .clock li.ho .led16-mono svg circle {
+  fill: var(--led-green);
+  filter: drop-shadow(0 0 4px rgba(0, 255, 65, 1.0))
+          drop-shadow(0 0 8px rgba(0, 255, 65, 0.4));
+}
+
+/* Enhanced contrast for background images */
+body.has-background.sixteen-segment .clock li.norm .led16-mono svg polygon,
+body.has-background.sixteen-segment .clock li.norm .led16-mono svg circle {
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+}
+
+body.has-background.sixteen-segment .clock li.hl .led16-mono svg polygon,
+body.has-background.sixteen-segment .clock li.hl .led16-mono svg circle {
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
+          drop-shadow(0 0 8px rgba(255, 42, 42, 1.0))
+          drop-shadow(0 0 16px rgba(255, 42, 42, 0.8))
+          drop-shadow(0 0 24px rgba(255, 42, 42, 0.5));
+}
+
+body.has-background.sixteen-segment .clock li.ho .led16-mono svg polygon,
+body.has-background.sixteen-segment .clock li.ho .led16-mono svg circle {
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9))
+          drop-shadow(0 0 6px rgba(0, 255, 65, 1.0))
+          drop-shadow(0 0 12px rgba(0, 255, 65, 0.3));
+}
