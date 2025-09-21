@@ -11,6 +11,7 @@ A unique digital clock that displays time using illuminated words instead of tra
 - [Terminal](https://carledwards.github.io/wordclock/?theme=terminal) - Green terminal display with monospace grid
 - [Live Terminal](https://carledwards.github.io/wordclock/?theme=live-terminal) - Animated typing cursor effect
 - [DOS](https://carledwards.github.io/wordclock/?theme=dos) - Classic DOS window with monospace grid
+- [16-Segment](https://carledwards.github.io/wordclock/?theme=16-segment) - LED-style 16-segment display with monospace grid
 - [Mac 1984](https://carledwards.github.io/wordclock/?theme=mac1984) - Classic Macintosh window
 - [Liquid Glass](https://carledwards.github.io/wordclock/?theme=liquid-glass) - iOS-style glass effects
 
@@ -34,6 +35,7 @@ The word clock presents time in natural language format, illuminating specific w
 - **Terminal**: Classic green monospace text with perfect grid alignment
 - **Live Terminal**: Animated cursor that types out the time character by character
 - **DOS**: Blue background with white text in authentic DOS style
+- **16-Segment**: LED-style 16-segment display with monospace grid alignment
 
 ### Classic Themes  
 - **Mac 1984**: Classic Macintosh window with title bar and menu
@@ -51,7 +53,7 @@ The clock automatically recognizes special dates and transforms the display:
 ## ⚙️ URL Parameters
 
 ### Basic Parameters
-- `?theme=terminal` - Choose a theme (default, terminal, live-terminal, dos, mac1984, liquid-glass)
+- `?theme=terminal` - Choose a theme (default, terminal, live-terminal, dos, 16-segment, mac1984, liquid-glass)
 - `?date=2024-12-25` - Set a specific date (YYYY-MM-DD format)
 - `?title=My Clock` - Custom window title (works with mac1984 theme)
 - `?controls=true` - Add time controls for testing
